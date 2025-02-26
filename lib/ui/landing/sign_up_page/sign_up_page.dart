@@ -1,11 +1,108 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:smart_retiree/shared_widgets/custom_textfield.dart';
 import 'package:smart_retiree/ui/landing/sign_in_page/sign_in_page.dart';
 import 'package:smart_retiree/utils/constants.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-class SignUp extends StatelessWidget {
-  const SignUp({Key? key}) : super(key: key);
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
+
+  @override
+  State<SignUpPage> createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
+  final TextEditingController _fullNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+
+  @override
+  void dispose() {
+    _fullNameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _doSignUp() async {
+    try {
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+      // Navigate to the next page or show a success message
+
+      print('Signed in: ${userCredential.user?.email}');
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided.');
+      }
+    }
+  }
+
+  String? _validateFields() {
+    if (_fullNameController.text.trim().isEmpty) {
+      return 'Full Name is required';
+    }
+    if (_emailController.text.trim().isEmpty) {
+      Fluttertoast.showToast(
+        msg: 'Email is required',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      return 'Email is required';
+    }
+    if (_passwordController.text.trim().isEmpty) {
+      Fluttertoast.showToast(
+        msg: 'Password is required',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      return 'Password is required';
+    }
+    if (_confirmPasswordController.text.trim().isEmpty) {
+      Fluttertoast.showToast(
+        msg: 'Confirm Password is required',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      return 'Confirm Password is required';
+    }
+    if (_passwordController.text.trim() !=
+        _confirmPasswordController.text.trim()) {
+      Fluttertoast.showToast(
+        msg: 'Passwords do not match',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      return 'Passwords do not match';
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,30 +127,53 @@ class SignUp extends StatelessWidget {
               const SizedBox(
                 height: 30,
               ),
-              const CustomTextfield(
+              CustomTextfield(
+                controller: _fullNameController,
+                obscureText: false,
+                hintText: 'Enter Full Name',
+                icon: Icons.person,
+              ),
+              CustomTextfield(
+                controller: _emailController,
                 obscureText: false,
                 hintText: 'Enter Email',
                 icon: Icons.alternate_email,
               ),
-              const CustomTextfield(
-                obscureText: false,
-                hintText: 'Enter Full name',
-                icon: Icons.person,
-              ),
-              const CustomTextfield(
+              CustomTextfield(
+                controller: _passwordController,
                 obscureText: true,
                 hintText: 'Enter Password',
+                icon: Icons.lock,
+              ),
+              CustomTextfield(
+                controller: _confirmPasswordController,
+                obscureText: true,
+                hintText: 'Confirm Password',
                 icon: Icons.lock,
               ),
               const SizedBox(
                 height: 10,
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () async {
+                  final error = _validateFields();
+                  if (error == null) {
+                    await _doSignUp();
+                    Navigator.pushReplacement(
+                      context,
+                      PageTransition(
+                        type: PageTransitionType.fade,
+                        child: SignInPage(),
+                      ),
+                    );
+                  } else {
+                    print(error);
+                  }
+                },
                 child: Container(
                   width: size.width,
                   decoration: BoxDecoration(
-                    color: Constants.primaryColor,
+                    color: Colors.red,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   padding:
@@ -63,7 +183,8 @@ class SignUp extends StatelessWidget {
                       'Sign Up',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 18.0,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
@@ -88,7 +209,7 @@ class SignUp extends StatelessWidget {
               Container(
                 width: size.width,
                 decoration: BoxDecoration(
-                    border: Border.all(color: Constants.primaryColor),
+                    border: Border.all(color: Colors.red),
                     borderRadius: BorderRadius.circular(10)),
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
@@ -99,7 +220,7 @@ class SignUp extends StatelessWidget {
                       height: 30,
                       child: Image.asset('assets/images/google.png'),
                     ),
-                    Text(
+                    const Text(
                       'Sign Up with Google',
                       style: TextStyle(
                         color: Constants.blackColor,
@@ -117,10 +238,10 @@ class SignUp extends StatelessWidget {
                   Navigator.pushReplacement(
                       context,
                       PageTransition(
-                          child: const SignIn(),
+                          child: const SignInPage(),
                           type: PageTransitionType.bottomToTop));
                 },
-                child: Center(
+                child: const Center(
                   child: Text.rich(
                     TextSpan(children: [
                       TextSpan(
@@ -132,7 +253,7 @@ class SignUp extends StatelessWidget {
                       TextSpan(
                         text: 'Login',
                         style: TextStyle(
-                          color: Constants.primaryColor,
+                          color: Colors.red,
                         ),
                       ),
                     ]),

@@ -1,6 +1,5 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
-
 import 'package:page_transition/page_transition.dart';
 import 'package:smart_retiree/models/plants.dart';
 import 'package:smart_retiree/ui/mp/home_page/gardning_page.dart';
@@ -53,28 +52,6 @@ class _RootPageState extends State<RootPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              titleList[_bottomNavIndex],
-              style: TextStyle(
-                color: Constants.blackColor,
-                fontWeight: FontWeight.w500,
-                fontSize: 24,
-              ),
-            ),
-            Icon(
-              Icons.settings,
-              color: Constants.blackColor,
-              size: 30.0,
-            )
-          ],
-        ),
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        elevation: 0.0,
-      ),
       body: IndexedStack(
         index: _bottomNavIndex,
         children: _widgetOptions(),
@@ -87,7 +64,8 @@ class _RootPageState extends State<RootPage> {
                   child: const GardningPage(),
                   type: PageTransitionType.bottomToTop));
         },
-        backgroundColor: Constants.primaryColor,
+        // backgroundColor: Constants.primaryColor,
+        backgroundColor: Colors.red,
         child: Image.asset(
           'assets/images/gar.png',
           height: 30.0,
@@ -95,9 +73,9 @@ class _RootPageState extends State<RootPage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: AnimatedBottomNavigationBar(
-          splashColor: Constants.primaryColor,
-          activeColor: Constants.primaryColor,
-          inactiveColor: Colors.black.withOpacity(.5),
+          splashColor: Colors.red,
+          activeColor: Colors.red,
+          inactiveColor: Colors.black,
           icons: iconList,
           activeIndex: _bottomNavIndex,
           gapLocation: GapLocation.center,

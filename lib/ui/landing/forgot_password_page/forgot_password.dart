@@ -30,7 +30,8 @@ class ForgotPassword extends StatelessWidget {
               const SizedBox(
                 height: 30,
               ),
-              const CustomTextfield(
+              CustomTextfield(
+                controller: TextEditingController(),
                 obscureText: false,
                 hintText: 'Enter Email',
                 icon: Icons.alternate_email,
@@ -40,7 +41,7 @@ class ForgotPassword extends StatelessWidget {
                 child: Container(
                   width: size.width,
                   decoration: BoxDecoration(
-                    color: Constants.primaryColor,
+                    color: Colors.red,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   padding:
@@ -64,10 +65,10 @@ class ForgotPassword extends StatelessWidget {
                   Navigator.pushReplacement(
                       context,
                       PageTransition(
-                          child: const SignIn(),
+                          child: const SignInPage(),
                           type: PageTransitionType.bottomToTop));
                 },
-                child: Center(
+                child: const Center(
                   child: Text.rich(
                     TextSpan(children: [
                       TextSpan(
@@ -79,7 +80,7 @@ class ForgotPassword extends StatelessWidget {
                       TextSpan(
                         text: 'Login',
                         style: TextStyle(
-                          color: Constants.primaryColor,
+                          color: Colors.red,
                         ),
                       ),
                     ]),

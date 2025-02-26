@@ -28,7 +28,7 @@ class _OnbordingScreenState extends State<OnbordingScreen> {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => const SignIn(),
+                      builder: (_) => const SignInPage(),
                     ));
               }, //to login screen. we will update later
               child: const Text(
@@ -83,9 +83,9 @@ class _OnbordingScreenState extends State<OnbordingScreen> {
               right: 30,
               child: Container(
                 padding: const EdgeInsets.all(4),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Constants.primaryColor,
+                  color: Colors.red,
                 ),
                 child: IconButton(
                     onPressed: () {
@@ -101,7 +101,7 @@ class _OnbordingScreenState extends State<OnbordingScreen> {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (_) => const RootPage(),
+                                builder: (_) => const SignInPage(),
                               ));
                         }
                       });
@@ -125,7 +125,7 @@ class _OnbordingScreenState extends State<OnbordingScreen> {
       width: isActive ? 20 : 8,
       margin: const EdgeInsets.only(right: 5.0),
       decoration: BoxDecoration(
-        color: Constants.primaryColor,
+        color: Colors.red,
         borderRadius: BorderRadius.circular(5),
       ),
     );
@@ -175,8 +175,8 @@ class createPage extends StatelessWidget {
           Text(
             title,
             textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Constants.primaryColor,
+            style: const TextStyle(
+              color: Colors.red,
               fontSize: 30,
               fontWeight: FontWeight.bold,
             ),

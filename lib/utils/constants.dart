@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 
 class Constants {
   //Primary color
-  static var primaryColor = const Color(0xff296e48);
-  static var blackColor = Colors.black54;
-  static var whiteColor = Colors.white54;
+  static const primaryColor = Color(0xff296e48);
+  static const blackColor = Colors.black54;
+  static const whiteColor = Colors.white54;
+  static final greyColor = Colors.grey.shade300;
 
   //Onboarding texts
   static var titleOne = "Sharing Knowledge";

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "709606280714",
+    "project_id": "smartretiree-f1684",
+    "storage_bucket": "smartretiree-f1684.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:709606280714:android:8c0656f64e352585ced9f3",
+        "android_client_info": {
+          "package_name": "com.example.smart_retiree"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxA1umor4ZTuTn_AvxB86715Cpv6nJYxA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

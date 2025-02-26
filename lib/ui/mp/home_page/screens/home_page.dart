@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:smart_retiree/utils/constants.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,18 +12,28 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Smart Retiree',
+        backgroundColor: Colors.red,
+        elevation: 0,
+        title: const Text(
+          'S M A R T  R E T I R E E',
           style: TextStyle(
-            fontFamily: 'Lobster',
-            fontSize: 30.0,
-            color: Constants.primaryColor,
+            color: Colors.white,
+            fontFamily: 'RobotoMono', // Updated to use RobotoMono font family
+            fontSize: 25.0,
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        elevation: 4.0,
+        leading: IconButton(
+          color: Colors.black,
+          onPressed: () {},
+          icon: const Icon(Icons.menu),
+        ),
+        actions: [
+          IconButton(
+              color: Colors.black,
+              onPressed: () {},
+              icon: const Icon(Icons.notifications))
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -34,17 +43,17 @@ class _HomePageState extends State<HomePage> {
             _buildBox(
               icon: Icons.school,
               text: 'Share Knowledge',
-              color: Colors.blueAccent,
+              color: Colors.grey[350] ?? Colors.red,
             ),
             _buildBox(
               icon: Icons.coffee,
               text: 'Leisure & lifestyle',
-              color: Colors.orangeAccent,
+              color: Colors.grey ?? Colors.red,
             ),
             _buildBox(
               icon: Icons.event,
               text: 'Events',
-              color: Colors.greenAccent,
+              color: Colors.grey[350] ?? Colors.red,
             ),
           ],
         ),
@@ -71,14 +80,14 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 40.0, color: Colors.white),
+          Icon(icon, size: 40.0, color: Colors.black),
           const SizedBox(height: 12.0),
           Text(
             text,
             style: const TextStyle(
               fontSize: 18.0,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+              fontWeight: FontWeight.normal,
+              color: Colors.black,
             ),
           ),
         ],

@@ -8,6 +8,7 @@ class ProfileWidget extends StatelessWidget {
     super.key,
     required this.icon,
     required this.title,
+    Color? color,
   });
 
   @override
@@ -21,7 +22,7 @@ class ProfileWidget extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                color: Constants.blackColor.withOpacity(.5),
+                color: Colors.red,
                 size: 24,
               ),
               const SizedBox(
@@ -29,8 +30,8 @@ class ProfileWidget extends StatelessWidget {
               ),
               Text(
                 title,
-                style: TextStyle(
-                  color: Constants.blackColor,
+                style: const TextStyle(
+                  color: Colors.black,
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
                 ),
