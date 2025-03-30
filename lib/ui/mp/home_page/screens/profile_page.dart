@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:smart_retiree/ui/mp/home_page/screens/notification_tap.dart';
+import 'package:smart_retiree/ui/mp/home_page/screens/setting_page.dart';
+import 'package:smart_retiree/ui/mp/home_page/screens/update_profile_screen.dart';
 import 'package:smart_retiree/ui/mp/home_page/screens/widgets/profile_widget.dart';
 import 'package:smart_retiree/utils/constants.dart';
 
@@ -47,18 +50,50 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                width: 150,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: Colors.red.withOpacity(0.5),
-                    width: 5.0,
-                  ),
-                ),
-                child: const CircleAvatar(
-                  radius: 60,
-                  backgroundImage: ExactAssetImage('assets/images/profile.jpg'),
+              Center(
+                child: Stack(
+                  children: [
+                    Container(
+                      width: 130,
+                      height: 130,
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              width: 4,
+                              color: Theme.of(context).scaffoldBackgroundColor),
+                          boxShadow: [
+                            BoxShadow(
+                                spreadRadius: 2,
+                                blurRadius: 10,
+                                color: Colors.black.withOpacity(0.1),
+                                offset: const Offset(0, 10))
+                          ],
+                          shape: BoxShape.circle,
+                          image: const DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(
+                                "https://images.pexels.com/photos/3307758/pexels-photo-3307758.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=250",
+                              ))),
+                    ),
+                    Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              width: 4,
+                              color: Theme.of(context).scaffoldBackgroundColor,
+                            ),
+                            color: Colors.black,
+                          ),
+                          child: const Icon(
+                            Icons.edit,
+                            color: Colors.white,
+                          ),
+                        )),
+                  ],
                 ),
               ),
               const SizedBox(height: 10),
@@ -67,7 +102,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Row(
                   children: [
                     const Text(
-                      'John Doe',
+                      'Dor Alex',
                       style: TextStyle(
                         color: Constants.blackColor,
                         fontSize: 20,
@@ -81,7 +116,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               Text(
-                'johndoe@gmail.com',
+                'alexd@gmail.com',
                 style: TextStyle(
                   color: Constants.blackColor.withOpacity(.3),
                 ),
@@ -93,12 +128,48 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const ProfileWidget(
-                        icon: Icons.person, title: 'Edit Profile'),
-                    const ProfileWidget(
-                        icon: Icons.settings, title: 'Settings'),
-                    const ProfileWidget(
-                        icon: Icons.notifications, title: 'Notifications'),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const EditProfilePage(),
+                          ),
+                        );
+                      },
+                      child: const ProfileWidget(
+                        icon: Icons.person,
+                        title: 'Edit Profile',
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SettingsPage(),
+                          ),
+                        );
+                      },
+                      child: const ProfileWidget(
+                        icon: Icons.settings,
+                        title: 'Settings',
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NotitcationTap(),
+                          ),
+                        );
+                      },
+                      child: const ProfileWidget(
+                        icon: Icons.notifications,
+                        title: 'Notification',
+                      ),
+                    ),
                     const ProfileWidget(icon: Icons.chat, title: 'FAQs'),
                     const ProfileWidget(icon: Icons.share, title: 'Share'),
                     GestureDetector(

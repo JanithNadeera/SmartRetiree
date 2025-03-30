@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:smart_retiree/ui/mp/home_page/screens/notification_tap.dart';
+import 'package:smart_retiree/ui/mp/home_page/screens/text_to_speech.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -24,14 +26,27 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         leading: IconButton(
-          color: Colors.black,
-          onPressed: () {},
-          icon: const Icon(Icons.menu),
-        ),
+            color: Colors.black,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const TextToSpeech(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.mic)),
         actions: [
           IconButton(
               color: Colors.black,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NotitcationTap(),
+                  ),
+                );
+              },
               icon: const Icon(Icons.notifications))
         ],
       ),
@@ -48,7 +63,7 @@ class _HomePageState extends State<HomePage> {
             _buildBox(
               icon: Icons.coffee,
               text: 'Leisure & lifestyle',
-              color: Colors.grey ?? Colors.red,
+              color: Colors.grey,
             ),
             _buildBox(
               icon: Icons.event,

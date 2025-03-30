@@ -6,6 +6,12 @@ class Constants {
   static const blackColor = Colors.black54;
   static const whiteColor = Colors.white54;
   static final greyColor = Colors.grey.shade300;
+  static const Color primary = Color(0xFF1FCC79);
+  static const Color Secondary = Color(0xFFFF6464);
+  static const Color mainText = Color(0xFF2E3E5C);
+  static const Color SecondaryText = Color(0xFF9FA5C0);
+  static const Color outline = Color(0xFFD0DBEA);
+  static const Color form = Color(0xFFF4F5F7);
 
   //Onboarding texts
   static var titleOne = "Sharing Knowledge";

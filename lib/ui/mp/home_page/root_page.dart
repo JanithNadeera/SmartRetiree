@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:smart_retiree/models/plants.dart';
 import 'package:smart_retiree/ui/mp/home_page/gardning_page.dart';
+import 'package:smart_retiree/ui/mp/home_page/screens/setting_page.dart';
+import 'package:smart_retiree/ui/mp/home_page/screens/update_profile_screen.dart';
 import 'package:smart_retiree/ui/mp/home_page/screens/yoga_page.dart';
 import 'package:smart_retiree/ui/mp/home_page/screens/favourite_page.dart';
 import 'package:smart_retiree/ui/mp/home_page/screens/home_page.dart';
 import 'package:smart_retiree/ui/mp/home_page/screens/profile_page.dart';
-import 'package:smart_retiree/utils/constants.dart';
 
 class RootPage extends StatefulWidget {
   const RootPage({super.key});
@@ -30,6 +31,8 @@ class _RootPageState extends State<RootPage> {
       ),
       const YogaPage(),
       const ProfilePage(),
+      // const EditProfilePage(),
+      // SettingsPage(),
     ];
   }
 
