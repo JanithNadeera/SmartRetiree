@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:smart_retiree/ui/landing/sign_in_page/sign_in_page.dart';
-import 'package:smart_retiree/ui/mp/home_page/root_page.dart';
 import 'package:smart_retiree/utils/constants.dart';
 
 class OnbordingScreen extends StatefulWidget {
@@ -53,18 +52,18 @@ class _OnbordingScreenState extends State<OnbordingScreen> {
               });
             },
             controller: _pageController,
-            children: [
-              createPage(
+            children: const [
+              CreatePage(
                 image: 'assets/images/screen-one.jpg',
                 title: Constants.titleOne,
                 description: Constants.descriptionOne,
               ),
-              createPage(
+              CreatePage(
                 image: 'assets/images/screen-two.jpg',
                 title: Constants.titleTwo,
                 description: Constants.descriptionTwo,
               ),
-              createPage(
+              CreatePage(
                 image: 'assets/images/screen-three.jpg',
                 title: Constants.titleThree,
                 description: Constants.descriptionThree,
@@ -146,12 +145,12 @@ class _OnbordingScreenState extends State<OnbordingScreen> {
   }
 }
 
-class createPage extends StatelessWidget {
+class CreatePage extends StatelessWidget {
   final String image;
   final String title;
   final String description;
 
-  const createPage({
+  const CreatePage({
     super.key,
     required this.image,
     required this.title,

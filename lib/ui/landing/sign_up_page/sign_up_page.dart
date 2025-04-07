@@ -3,13 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
-import 'package:smart_retiree/enums.dart';
 import 'package:smart_retiree/shared_widgets/input_form_field.dart';
 import 'package:smart_retiree/shared_widgets/submit_button.dart';
 import 'package:smart_retiree/ui/landing/sign_in_page/sign_in_page.dart';
 import 'package:smart_retiree/ui/landing/sign_in_page/widgets/auth_footer.dart';
 import 'package:smart_retiree/utils/core_utils.dart';
-import 'package:smart_retiree/utils/customer_type_selector.dart';
+import 'package:smart_retiree/utils/user_role_selector.dart';
 import 'package:smart_retiree/utils/validators.dart';
 
 class RegisterScreen extends StatefulWidget {

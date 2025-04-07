@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -5,7 +7,7 @@ import 'package:gap/gap.dart';
 import 'package:smart_retiree/shared_widgets/input_form_field.dart';
 import 'package:smart_retiree/shared_widgets/submit_button.dart';
 import 'package:smart_retiree/ui/landing/sign_in_page/widgets/auth_footer.dart';
-import 'package:smart_retiree/ui/mp2/navigation/navigation_screen.dart';
+import 'package:smart_retiree/ui/mp/navigation/navigation_screen.dart';
 import 'package:smart_retiree/utils/core_utils.dart';
 import 'package:smart_retiree/utils/validators.dart';
 
@@ -45,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
         );
 
         // Successful login - Navigate or show success
-        print("User signed in: ${userCredential.user?.email}");
+        log("User signed in: ${userCredential.user?.email}");
         CoreUtils.postFrameCall(() => Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (_) => const NavigationScreen()),

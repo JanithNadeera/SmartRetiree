@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:smart_retiree/enums.dart';
 import 'package:smart_retiree/utils/theme_extension.dart';
+
+enum UserRole {
+  retiree,
+  seeker,
+}
 
 class UserRoleSelector extends StatelessWidget {
   final ValueChanged<UserRole>? onSelect;

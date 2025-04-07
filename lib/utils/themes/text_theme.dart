@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-final TextTheme lightTextTheme = TextTheme(
+const TextTheme lightTextTheme = TextTheme(
   displayLarge: TextStyle(
     fontSize: 32,
     fontWeight: FontWeight.bold,
@@ -82,7 +82,7 @@ final TextTheme lightTextTheme = TextTheme(
   ),
 );
 
-final TextTheme darkTextTheme = TextTheme(
+const TextTheme darkTextTheme = TextTheme(
   displayLarge: TextStyle(
     fontSize: 32,
     fontWeight: FontWeight.bold,
