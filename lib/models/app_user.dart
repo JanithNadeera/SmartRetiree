@@ -1,5 +1,5 @@
 import 'package:smart_retiree/utils/user_role_selector.dart';
-import 'package:smart_retiree/utils/string_extension.dart' as ext;
+import 'package:smart_retiree/utils/string_extension.dart';
 
 class AppUser {
   final String uid;
@@ -25,7 +25,17 @@ class AppUser {
       firstName: map['first_name'] ?? '',
       lastName: map['last_name'] ?? '',
       occupation: map['occupation'] ?? '',
-      role: (map['user_role'])?.role ?? '',
+      role: (map['user_role'] as String).role,
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'email': email,
+      'first_name': firstName,
+      'last_name': lastName,
+      'occupation': occupation,
+      'user_role': role.name,
+    };
   }
 }

@@ -1,8 +1,10 @@
-import 'dart:developer';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:smart_retiree/models/app_user.dart';
+import 'package:smart_retiree/providers/user_provider.dart';
 
 import 'package:smart_retiree/shared_widgets/input_form_field.dart';
 import 'package:smart_retiree/shared_widgets/submit_button.dart';
@@ -12,24 +14,17 @@ import 'package:smart_retiree/utils/core_utils.dart';
 import 'package:smart_retiree/utils/loader.dart';
 import 'package:smart_retiree/utils/validators.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  late TextEditingController _emailController;
-  late TextEditingController _passwordController;
+class _LoginScreenState extends ConsumerState<LoginScreen> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-
-  @override
-  void initState() {
-    _emailController = TextEditingController();
-    _passwordController = TextEditingController();
-    super.initState();
-  }
 
   @override
   void dispose() {
@@ -48,8 +43,15 @@ class _LoginScreenState extends State<LoginScreen> {
           password: _passwordController.text.trim(),
         );
 
-        // Successful login - Navigate or show success
-        log("User signed in: ${userCredential.user?.email}");
+        final uid = userCredential.user?.uid;
+        final doc =
+            await FirebaseFirestore.instance.collection('users').doc(uid).get();
+
+        if (doc.exists && context.mounted) {
+          final appUser = AppUser.fromMap(uid!, doc.data()!);
+          ref.read(userProvider.notifier).state = appUser;
+        }
+
         CoreUtils.postFrameCall(() => Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (_) => const NavigationScreen()),

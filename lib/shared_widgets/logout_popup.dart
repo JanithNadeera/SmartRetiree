@@ -1,12 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:smart_retiree/providers/user_provider.dart';
 import 'package:smart_retiree/ui/landing/sign_in_page/sign_in_page.dart';
+import 'package:smart_retiree/utils/core_utils.dart';
 import 'package:smart_retiree/utils/theme_extension.dart';
 
-class LogoutPopup extends StatelessWidget {
+class LogoutPopup extends ConsumerWidget {
   const LogoutPopup({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -44,11 +48,13 @@ class LogoutPopup extends StatelessWidget {
               ),
               const SizedBox(height: 30),
               ElevatedButton(
-                onPressed: () {
-                  Navigator.pushAndRemoveUntil(
+                onPressed: () async {
+                  await FirebaseAuth.instance.signOut();
+                  ref.read(userProvider.notifier).state = null;
+                  CoreUtils.postFrameCall(() => Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(builder: (_) => const LoginScreen()),
-                      (_) => false);
+                      (route) => false));
                 },
                 child: const Text("Yes, logout"),
               ),

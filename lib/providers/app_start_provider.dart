@@ -14,7 +14,7 @@ final appStartProvider = FutureProvider<void>((ref) async {
 
     if (doc.exists) {
       final user = AppUser.fromMap(firebaseUser.uid, doc.data()!);
-      ref.read(userProvider.notifier).state = user; // ✅ Set user
+      ref.read(userProvider.notifier).state = user;
     }
   }
 });
