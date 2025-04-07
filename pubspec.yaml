@@ -59,6 +59,7 @@ dependencies:
   line_awesome_flutter: ^3.0.1
   flutter_svg: ^2.0.17
   flutter_tts: ^4.2.2
+  gap: ^3.0.1
   
   
   

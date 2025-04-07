@@ -28,7 +28,7 @@ class _OnbordingScreenState extends State<OnbordingScreen> {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => const SignInPage(),
+                      builder: (_) => const LoginScreen(),
                     ));
               }, //to login screen. we will update later
               child: const Text(
@@ -101,7 +101,7 @@ class _OnbordingScreenState extends State<OnbordingScreen> {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (_) => const SignInPage(),
+                                builder: (_) => const LoginScreen(),
                               ));
                         }
                       });

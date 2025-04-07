@@ -1,26 +1,30 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
-import 'package:smart_retiree/shared_widgets/custom_textfield.dart';
-import 'package:smart_retiree/ui/landing/forgot_password_page/forgot_password.dart';
-import 'package:smart_retiree/ui/landing/sign_up_page/sign_up_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:smart_retiree/ui/mp/home_page/root_page.dart';
+import 'package:gap/gap.dart';
 
-import 'package:smart_retiree/utils/constants.dart';
+import 'package:smart_retiree/shared_widgets/input_form_field.dart';
+import 'package:smart_retiree/shared_widgets/submit_button.dart';
+import 'package:smart_retiree/ui/landing/sign_in_page/widgets/auth_footer.dart';
+import 'package:smart_retiree/utils/theme_extension.dart';
 
-class SignInPage extends StatefulWidget {
-  const SignInPage({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+  static const path = '/login';
 
   @override
-  State<SignInPage> createState() => _SignInPageState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _SignInPageState extends State<SignInPage> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+class _LoginScreenState extends State<LoginScreen> {
+  late TextEditingController _emailController;
+  late TextEditingController _passwordController;
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -29,280 +33,103 @@ class _SignInPageState extends State<SignInPage> {
     super.dispose();
   }
 
-  Future<void> _signInWithEmailAndPassword() async {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      },
-    );
-
-    try {
-      UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
-      // Navigate to the HomePage or show a success message
-      print('Signed in: ${userCredential.user?.email}');
-      Navigator.pop(context); // Close the loading dialog
-      Navigator.pushReplacement(
-        context,
-        PageTransition(
-          type: PageTransitionType.fade,
-          child: const RootPage(),
-        ),
-      );
-    } on FirebaseAuthException catch (e) {
-      log(e.toString());
-      Navigator.pop(context); // Close the loading dialog
-      if (e.code == 'user-not-found') {
-        Fluttertoast.showToast(
-          msg: 'No user found for that email.',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
-      } else if (e.code == 'wrong-password') {
-        Fluttertoast.showToast(
-          msg: 'Wrong password provided.',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
-      }
-    }
-  }
-
-  String? _validateFields() {
-    if (_emailController.text.isEmpty) {
-      Fluttertoast.showToast(
-        msg: 'Email cannot be empty',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-      return 'Email cannot be empty';
-    }
-    final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
-    if (!emailRegex.hasMatch(_emailController.text)) {
-      Fluttertoast.showToast(
-        msg: 'Enter a valid email address',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-      return 'Enter a valid email address';
-    }
-    if (_passwordController.text.isEmpty) {
-      Fluttertoast.showToast(
-        msg: 'Password cannot be empty',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-      return 'Password cannot be empty';
-    }
-    if (_passwordController.text.length < 6) {
-      Fluttertoast.showToast(
-        msg: 'Password must be at least 6 characters long',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-      return 'Password must be at least 6 characters long';
-    }
-    return null;
-  }
-
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Image.asset('assets/images/signin.png'),
-              const Text(
-                'Sign In',
-                style: TextStyle(
-                  fontSize: 35.0,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              CustomTextfield(
-                controller: _emailController,
-                obscureText: false,
-                hintText: 'Enter Email',
-                icon: Icons.alternate_email,
-              ),
-              CustomTextfield(
-                controller: _passwordController,
-                obscureText: true,
-                hintText: 'Enter Password',
-                icon: Icons.lock,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              GestureDetector(
-                onTap: () {
-                  final error = _validateFields();
-                  if (error == null) {
-                    _signInWithEmailAndPassword();
-                  } else {
-                    print(error);
-                  }
-                },
-                child: Container(
-                  width: size.width,
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                  child: const Center(
-                    child: Text(
-                      'Sign In',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18.0,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushReplacement(
-                      context,
-                      PageTransition(
-                          child: const ForgotPassword(),
-                          type: PageTransitionType.bottomToTop));
-                },
-                child: const Center(
-                  child: Text.rich(
-                    TextSpan(children: [
-                      TextSpan(
-                        text: 'Forgot Password? ',
-                        style: TextStyle(
-                          color: Constants.blackColor,
-                        ),
-                      ),
-                      TextSpan(
-                        text: 'Reset Here',
-                        style: TextStyle(
-                          color: Colors.red,
-                        ),
-                      ),
-                    ]),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              const Row(
-                children: [
-                  Expanded(child: Divider()),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Text('OR'),
-                  ),
-                  Expanded(child: Divider()),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                width: size.width,
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.red),
-                    borderRadius: BorderRadius.circular(10)),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 32),
+          child: SingleChildScrollView(
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height -
+                  MediaQuery.of(context).padding.top,
+              width: MediaQuery.of(context).size.width,
+              child: Form(
+                key: _formKey,
+                child: Column(
                   children: [
-                    SizedBox(
-                      height: 30,
-                      child: Image.asset('assets/images/google.png'),
-                    ),
-                    const Text(
-                      'Sign In with Google',
-                      style: TextStyle(
-                        color: Constants.blackColor,
-                        fontSize: 18.0,
+                    const Spacer(),
+                    Transform.rotate(
+                      angle: -15 * 3.141592653589793 / 180,
+                      child: Text(
+                        'RC',
+                        style: TextStyle(
+                          fontFamily: "Agbalumo",
+                          color: Color(0xFFEC2824),
+                          fontSize: 120,
+                          fontWeight: FontWeight.bold,
+                          shadows: [
+                            Shadow(
+                              blurRadius: 5.0,
+                              color: context.onSurface,
+                              offset: Offset(1.5, 1.5),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
+                    const Spacer(),
+                    InputField(
+                      controller: _emailController,
+                      hintText: "Email",
+                      textInputType: TextInputType.emailAddress,
+                      prefixIcon: Icons.email_outlined,
+                      validator: (email) {
+                        if (email == null || email.trim().isEmpty) {
+                          return "Provide an email address";
+                        }
+                        if (!RegExp(
+                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                            .hasMatch(email)) {
+                          return "Please use a valid email address";
+                        }
+                        return null;
+                      },
+                    ),
+                    Gap(16),
+                    InputField(
+                      controller: _passwordController,
+                      hintText: "Password",
+                      textInputType: TextInputType.visiblePassword,
+                      prefixIcon: Icons.key,
+                      obscureText: true,
+                      validator: (password) {
+                        if (password == null || password.trim().isEmpty) {
+                          return "Provide a password";
+                        }
+                        return null;
+                      },
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 6.0, bottom: 24),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * .8,
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: GestureDetector(
+                            onTap: () {},
+                            child: Text(
+                              'Forgot password?',
+                              style: context.bodyMedium.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SubmitButton(
+                      onPressed: () async {},
+                      label: "Sign In",
+                    ),
+                    // SocialSignIn(),
+                    AuthFooter(isLogin: true),
+                    const Spacer(),
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushReplacement(
-                      context,
-                      PageTransition(
-                          child: const SignUpPage(),
-                          type: PageTransitionType.bottomToTop));
-                },
-                child: const Center(
-                  child: Text.rich(
-                    TextSpan(children: [
-                      TextSpan(
-                        text: 'New to Planty? ',
-                        style: TextStyle(
-                          color: Constants.blackColor,
-                        ),
-                      ),
-                      TextSpan(
-                        text: 'Register',
-                        style: TextStyle(
-                          color: Colors.red,
-                        ),
-                      ),
-                    ]),
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ),

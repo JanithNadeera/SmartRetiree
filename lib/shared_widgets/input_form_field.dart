@@ -1,91 +1,76 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_retiree/utils/theme_extension.dart';
 
-class InputFormField extends StatelessWidget {
-  final TextEditingController controller;
-  final TextInputType keyboardType;
-  final List<TextInputFormatter>? inputFormatters;
-  final String? Function(String?)? validator;
-  final String labelText;
+class InputField extends StatefulWidget {
   final String hintText;
-  final IconData prefixIcon;
-
-  final AutovalidateMode? validateMode;
-  const InputFormField(
-      {super.key,
-      required this.controller,
-      required this.keyboardType,
-      this.inputFormatters,
-      this.validator,
-      required this.labelText,
-      required this.hintText,
-      required this.prefixIcon,
-      this.validateMode});
+  final String? labelText;
+  final IconData? prefixIcon;
+  final TextEditingController? controller;
+  final TextInputType textInputType;
+  final bool obscureText;
+  final int? maxLength;
+  final double? width;
+  final List<TextInputFormatter>? inputFormatters;
+  final bool readOnly;
+  final String? Function(String?)? validator;
+  final String? initialValue;
+  final void Function(String)? onChanged;
+  const InputField({
+    super.key,
+    this.controller,
+    required this.hintText,
+    required this.textInputType,
+    this.prefixIcon,
+    this.maxLength,
+    this.width,
+    this.inputFormatters,
+    this.validator,
+    this.obscureText = false,
+    this.readOnly = false,
+    this.initialValue,
+    this.onChanged,
+    this.labelText,
+  });
 
   @override
+  State<InputField> createState() => _InputFieldState();
+}
+
+class _InputFieldState extends State<InputField> {
+  bool isHide = true;
+  @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: 25.h),
+    return SizedBox(
+      width: widget.width ?? double.maxFinite,
       child: TextFormField(
-        controller: controller,
-        autovalidateMode: validateMode ?? AutovalidateMode.onUserInteraction,
-        style: TextStyle(
-            color: Colors.black87,
-            fontSize: 15.sp,
-            decoration: TextDecoration.none),
+        initialValue: widget.initialValue,
+        controller: widget.controller,
+        onChanged: widget.onChanged,
+        readOnly: widget.readOnly,
+        style: context.bodyLarge,
         textAlignVertical: TextAlignVertical.center,
         cursorColor: Colors.red,
-        keyboardType: keyboardType,
-        inputFormatters: inputFormatters,
-        validator: validator,
+        keyboardType: widget.textInputType,
+        obscureText: widget.obscureText ? isHide : widget.obscureText,
+        maxLength: widget.maxLength,
+        inputFormatters: widget.inputFormatters,
+        validator: widget.validator,
         decoration: InputDecoration(
-          labelText: labelText,
-          errorStyle: TextStyle(
-            color: Colors.redAccent,
-            fontSize: 15.sp,
-          ),
-          floatingLabelStyle: TextStyle(
-            color: Colors.black87,
-            fontSize: 15.sp,
-          ),
-          hintText: hintText,
-          hintStyle: TextStyle(
-              color: Colors.black38,
-              fontSize: 14.sp,
-              fontStyle: FontStyle.italic),
-          prefixIcon: Padding(
-            padding: EdgeInsets.all(10.h),
-            child: Icon(
-              prefixIcon,
-              size: 25.h,
-            ),
-          ),
-          prefixIconColor:
-              WidgetStateColor.resolveWith((Set<WidgetState> states) {
-            if (states.contains(WidgetState.error)) {
-              return Colors.redAccent;
-            }
-            return Colors.black45;
-          }),
-          suffixIcon: Padding(
-            padding: EdgeInsets.all(10.h),
-          ),
-          contentPadding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
-          fillColor: Colors.transparent,
-          filled: false,
-          border: OutlineInputBorder(
-              borderSide: const BorderSide(color: Colors.black12),
-              borderRadius: BorderRadius.circular(8.h)),
-          focusedBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: Colors.black54),
-              borderRadius: BorderRadius.circular(8.h)),
-          enabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: Colors.black12),
-              borderRadius: BorderRadius.circular(8.h)),
-          errorBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: Colors.redAccent),
-              borderRadius: BorderRadius.circular(8.h)),
+          labelText: widget.labelText,
+          hintText: widget.hintText,
+          counterText: "",
+          prefixIcon: Icon(widget.prefixIcon),
+          suffixIcon: widget.obscureText
+              ? IconButton(
+                  onPressed: () => setState(() => isHide = !isHide),
+                  icon: Icon(
+                    isHide
+                        ? Icons.visibility_off_outlined
+                        : Icons.visibility_outlined,
+                  ),
+                )
+              : null,
         ),
       ),
     );

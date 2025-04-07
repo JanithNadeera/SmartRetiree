@@ -65,7 +65,7 @@ class ForgotPassword extends StatelessWidget {
                   Navigator.pushReplacement(
                       context,
                       PageTransition(
-                          child: const SignInPage(),
+                          child: const LoginScreen(),
                           type: PageTransitionType.bottomToTop));
                 },
                 child: const Center(

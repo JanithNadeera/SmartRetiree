@@ -65,8 +65,9 @@ class _TextToSpeechState extends State<TextToSpeech> {
         backgroundColor: Colors.red,
         elevation: 0,
         title: const Text(
-          'T E X T  T O  S P E E C H',
+          'TEXT  TO  SPEECH',
           style: TextStyle(
+            letterSpacing: 5,
             color: Colors.white,
             fontFamily: 'RobotoMono', // Updated to use RobotoMono font family
             fontSize: 25.0,

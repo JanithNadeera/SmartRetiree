@@ -54,23 +54,36 @@ class _SecondConfirmationPopupState extends State<SecondConfirmationPopup> {
                   SizedBox(
                     height: 20.h,
                   ),
-                  InputFormField(
+                  InputField(
                     controller: textController,
-                    keyboardType: TextInputType.visiblePassword,
-                    labelText: "Password",
-                    hintText: "xxxxxx",
-                    prefixIcon: Icons.lock_outline_rounded,
-                    validateMode: AutovalidateMode.disabled,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'This field cannot be empty';
-                      }
-                      if (value.length < 6) {
-                        return 'Password must be at least 6 characters';
+                    hintText: "Password",
+                    textInputType: TextInputType.visiblePassword,
+                    prefixIcon: Icons.key,
+                    obscureText: true,
+                    validator: (password) {
+                      if (password == null || password.trim().isEmpty) {
+                        return "Provide a password";
                       }
                       return null;
                     },
                   ),
+                  // InputField(
+                  //   controller: textController,
+                  //   keyboardType: TextInputType.visiblePassword,
+                  //   labelText: "Password",
+                  //   hintText: "xxxxxx",
+                  //   prefixIcon: Icons.lock_outline_rounded,
+                  //   validateMode: AutovalidateMode.disabled,
+                  //   validator: (value) {
+                  //     if (value == null || value.isEmpty) {
+                  //       return 'This field cannot be empty';
+                  //     }
+                  //     if (value.length < 6) {
+                  //       return 'Password must be at least 6 characters';
+                  //     }
+                  //     return null;
+                  //   },
+                  // ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
