@@ -1,0 +1,4 @@
+enum UserRole {
+  retiree,
+  seeker,
+}

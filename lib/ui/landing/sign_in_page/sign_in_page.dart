@@ -1,14 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 import 'package:smart_retiree/shared_widgets/input_form_field.dart';
 import 'package:smart_retiree/shared_widgets/submit_button.dart';
 import 'package:smart_retiree/ui/landing/sign_in_page/widgets/auth_footer.dart';
-import 'package:smart_retiree/utils/theme_extension.dart';
+import 'package:smart_retiree/ui/mp2/navigation/navigation_screen.dart';
+import 'package:smart_retiree/utils/core_utils.dart';
+import 'package:smart_retiree/utils/validators.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
-  static const path = '/login';
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -33,12 +35,45 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+  _login() async {
+    if (_formKey.currentState?.validate() ?? false) {
+      try {
+        final userCredential =
+            await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+        );
+
+        // Successful login - Navigate or show success
+        print("User signed in: ${userCredential.user?.email}");
+        CoreUtils.postFrameCall(() => Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (_) => const NavigationScreen()),
+            (route) => false));
+      } on FirebaseAuthException catch (e) {
+        String errorMessage;
+        switch (e.code) {
+          case 'user-not-found':
+            errorMessage = 'No user found for this email.';
+            break;
+          case 'wrong-password':
+            errorMessage = 'Incorrect password.';
+            break;
+          default:
+            errorMessage = 'Login failed. Please try again.';
+        }
+
+        CoreUtils.showToast(type: ToastType.error, message: errorMessage);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 32),
+          padding: const EdgeInsets.symmetric(horizontal: 32),
           child: SingleChildScrollView(
             child: SizedBox(
               height: MediaQuery.of(context).size.height -
@@ -49,82 +84,29 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   children: [
                     const Spacer(),
-                    Transform.rotate(
-                      angle: -15 * 3.141592653589793 / 180,
-                      child: Text(
-                        'RC',
-                        style: TextStyle(
-                          fontFamily: "Agbalumo",
-                          color: Color(0xFFEC2824),
-                          fontSize: 120,
-                          fontWeight: FontWeight.bold,
-                          shadows: [
-                            Shadow(
-                              blurRadius: 5.0,
-                              color: context.onSurface,
-                              offset: Offset(1.5, 1.5),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const Spacer(),
                     InputField(
                       controller: _emailController,
                       hintText: "Email",
                       textInputType: TextInputType.emailAddress,
                       prefixIcon: Icons.email_outlined,
-                      validator: (email) {
-                        if (email == null || email.trim().isEmpty) {
-                          return "Provide an email address";
-                        }
-                        if (!RegExp(
-                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                            .hasMatch(email)) {
-                          return "Please use a valid email address";
-                        }
-                        return null;
-                      },
+                      validator: Validators.validateEmail,
                     ),
-                    Gap(16),
+                    const Gap(16),
                     InputField(
                       controller: _passwordController,
                       hintText: "Password",
                       textInputType: TextInputType.visiblePassword,
                       prefixIcon: Icons.key,
                       obscureText: true,
-                      validator: (password) {
-                        if (password == null || password.trim().isEmpty) {
-                          return "Provide a password";
-                        }
-                        return null;
-                      },
+                      validator: Validators.validatePassword,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 6.0, bottom: 24),
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width * .8,
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: GestureDetector(
-                            onTap: () {},
-                            child: Text(
-                              'Forgot password?',
-                              style: context.bodyMedium.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.red,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                    const Gap(32),
                     SubmitButton(
-                      onPressed: () async {},
+                      onPressed: _login,
                       label: "Sign In",
                     ),
-                    // SocialSignIn(),
-                    AuthFooter(isLogin: true),
+                    const Gap(16),
+                    const AuthFooter(isLogin: true),
                     const Spacer(),
                   ],
                 ),
