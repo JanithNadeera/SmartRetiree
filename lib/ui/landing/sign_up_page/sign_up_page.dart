@@ -8,6 +8,7 @@ import 'package:smart_retiree/shared_widgets/submit_button.dart';
 import 'package:smart_retiree/ui/landing/sign_in_page/sign_in_page.dart';
 import 'package:smart_retiree/ui/landing/sign_in_page/widgets/auth_footer.dart';
 import 'package:smart_retiree/utils/core_utils.dart';
+import 'package:smart_retiree/utils/loader.dart';
 import 'package:smart_retiree/utils/user_role_selector.dart';
 import 'package:smart_retiree/utils/validators.dart';
 
@@ -149,6 +150,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     if (_formKey.currentState!.validate()) {
       try {
+        Loader.show(true);
+
         final UserCredential userCredential =
             await auth.createUserWithEmailAndPassword(
           email: _emailController.text.trim(),
@@ -185,6 +188,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
           type: ToastType.error,
           message: "Error: $e",
         );
+      } finally {
+        Loader.show(false);
       }
     }
   }
