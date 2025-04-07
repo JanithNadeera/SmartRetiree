@@ -31,7 +31,8 @@ class MyApp extends StatelessWidget {
         scaffoldMessengerKey: rootScaffoldMessengerKey,
         navigatorKey: rootNavigatorKey,
         theme: lightTheme,
-        themeMode: ThemeMode.light,
+        darkTheme: darkTheme,
+        themeMode: ThemeMode.system,
         home: const SplashScreen(),
       ),
     );

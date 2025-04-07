@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 extension ThemeExtensions on BuildContext {
   bool get isDarkMode => Theme.of(this).brightness == Brightness.dark;
   bool get isLightMode => Theme.of(this).brightness == Brightness.light;
-  Color get onPrimaryColor => Theme.of(this).colorScheme.onPrimary;
   Brightness get brightness => Theme.of(this).colorScheme.brightness;
+
   Color get primary => Theme.of(this).colorScheme.primary;
   Color get onPrimary => Theme.of(this).colorScheme.onPrimary;
   Color get primaryContainer => Theme.of(this).colorScheme.primaryContainer;
