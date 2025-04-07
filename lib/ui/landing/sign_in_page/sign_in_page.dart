@@ -9,6 +9,7 @@ import 'package:smart_retiree/shared_widgets/submit_button.dart';
 import 'package:smart_retiree/ui/landing/sign_in_page/widgets/auth_footer.dart';
 import 'package:smart_retiree/ui/mp/navigation/navigation_screen.dart';
 import 'package:smart_retiree/utils/core_utils.dart';
+import 'package:smart_retiree/utils/loader.dart';
 import 'package:smart_retiree/utils/validators.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -40,6 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
   _login() async {
     if (_formKey.currentState?.validate() ?? false) {
       try {
+        Loader.show(true);
         final userCredential =
             await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _emailController.text.trim(),
@@ -66,6 +68,8 @@ class _LoginScreenState extends State<LoginScreen> {
         }
 
         CoreUtils.showToast(type: ToastType.error, message: errorMessage);
+      } finally {
+        Loader.show(false);
       }
     }
   }

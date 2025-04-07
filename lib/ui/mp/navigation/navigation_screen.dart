@@ -16,12 +16,26 @@ class _NavigationScreenState extends State<NavigationScreen> {
   final icons = [
     (Icons.home_outlined, Icons.home, "New Order"),
     (Icons.food_bank_outlined, Icons.food_bank, "Order"),
+    (Icons.food_bank_outlined, Icons.food_bank, "dasda"),
     (Clarity.settings_line, Clarity.settings_solid, "Settings"),
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: [Container(), Container(), Container()][activeIndex],
+      body: [
+        Container(
+          color: Colors.amber,
+        ),
+        Container(
+          color: Colors.amber,
+        ),
+        Container(
+          color: Colors.black,
+        ),
+        Container(
+          color: Colors.pink,
+        )
+      ][activeIndex],
       bottomNavigationBar: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(
