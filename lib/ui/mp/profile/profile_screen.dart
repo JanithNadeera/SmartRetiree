@@ -15,12 +15,18 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: ListView(
-          children: [
-            IconButton(
-                onPressed: () => CoreUtils.heroDialog(const LogoutPopup()),
-                icon: const Icon(Icons.logout_rounded)),
-          ],
+        child: Center(
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              IconButton(
+                  onPressed: () => CoreUtils.heroDialog(const LogoutPopup()),
+                  icon: const Icon(
+                    Icons.logout_rounded,
+                    size: 40,
+                  )),
+            ],
+          ),
         ),
       ),
     );

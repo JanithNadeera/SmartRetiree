@@ -1,8 +1,11 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:icons_plus/icons_plus.dart';
+import 'package:smart_retiree/ui/mp/forum/forum_screen.dart';
 import 'package:smart_retiree/ui/mp/home/home_screen.dart';
 import 'package:smart_retiree/ui/mp/profile/profile_screen.dart';
+import 'package:smart_retiree/ui/mp/support/support_screen.dart';
 import 'package:smart_retiree/utils/theme_extension.dart';
 
 class NavigationScreen extends StatefulWidget {
@@ -15,20 +18,16 @@ class NavigationScreen extends StatefulWidget {
 class _NavigationScreenState extends State<NavigationScreen> {
   int activeIndex = 0;
   final icons = [
-    (Icons.home_outlined, Icons.home, "Feed"),
-    (Icons.food_bank_outlined, Icons.food_bank, "Order"),
-    (Icons.food_bank_outlined, Icons.food_bank, "dasda"),
-    (Icons.person_2_outlined, Icons.person_2_rounded, "Profile"),
+    (MingCute.rss_line, MingCute.rss_fill, "Feed"),
+    (MingCute.chat_1_line, MingCute.chat_1_fill, "Forum"),
+    (MingCute.hand_heart_line, MingCute.hand_heart_fill, "Support"),
+    (MingCute.user_5_line, MingCute.user_5_fill, "Profile"),
   ];
 
   final screens = [
     const HomeScreen(),
-    Container(
-      color: Colors.amber,
-    ),
-    Container(
-      color: Colors.blue,
-    ),
+    const ForumScreen(),
+    const SupportScreen(),
     const ProfileScreen()
   ];
   @override
@@ -36,26 +35,23 @@ class _NavigationScreenState extends State<NavigationScreen> {
     return Scaffold(
       body: screens[activeIndex],
       bottomNavigationBar: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 8,
-          ).copyWith(top: 8),
-          child: GNav(
-            gap: 8,
-            activeColor: context.primary,
-            color: Colors.grey,
-            tabs: icons.mapIndexed((index, item) {
-              return GButton(
-                icon: activeIndex == index ? item.$2 : item.$1,
-                text: item.$3,
-              );
-            }).toList(),
-            onTabChange: (index) {
-              setState(() {
-                activeIndex = index;
-              });
-            },
-          ),
+        child: GNav(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+          gap: 8,
+          activeColor: context.primary,
+          color: Colors.grey,
+          tabs: icons.mapIndexed((index, item) {
+            return GButton(
+              icon: activeIndex == index ? item.$2 : item.$1,
+              text: item.$3,
+              iconSize: 27.5,
+            );
+          }).toList(),
+          onTabChange: (index) {
+            setState(() {
+              activeIndex = index;
+            });
+          },
         ),
       ),
     );
