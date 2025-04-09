@@ -6,6 +6,7 @@ import 'package:gap/gap.dart';
 import 'package:smart_retiree/shared_widgets/logout_popup.dart';
 import 'package:smart_retiree/ui/mp/profile/edit_profile.dart';
 import 'package:smart_retiree/utils/core_utils.dart';
+import 'package:smart_retiree/utils/loader.dart';
 import 'package:smart_retiree/utils/theme_extension.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
@@ -34,6 +35,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   Future<void> _loadUserData() async {
     try {
+      Loader.show(true);
+
       final uid = FirebaseAuth.instance.currentUser?.uid;
       if (uid == null) return;
 
@@ -51,7 +54,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       CoreUtils.showToast(
           type: ToastType.error, message: "Failed to load profile");
     } finally {
-      setState(() => isLoading = false);
+      setState(() => Loader.show(false));
     }
   }
 
@@ -95,93 +98,93 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           ),
         ],
       ),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : SafeArea(
-              child: Form(
-                key: _formKey,
-                child: ListView(
-                  padding: const EdgeInsets.all(24),
-                  children: [
-                    /// Profile Picture
-                    Column(
+      body:
+          // isLoading
+          //     ? const Center(child: CircularProgressIndicator())
+          // :
+          SafeArea(
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            padding: const EdgeInsets.all(24),
+            children: [
+              /// Profile Picture
+              Column(
+                children: [
+                  Center(
+                    child: Stack(
                       children: [
-                        Center(
-                          child: Stack(
-                            children: [
-                              CircleAvatar(
-                                radius: 55,
-                                backgroundImage: AssetImage(profileImagePath ??
-                                    'assets/images/Avatar.png'),
-                              ),
-                              Positioned(
-                                bottom: 4,
-                                right: 4,
-                                child: InkWell(
-                                  onTap: () {}, // Optional: add image picker
-                                  child: const CircleAvatar(
-                                    radius: 18,
-                                    backgroundColor: Colors.blue,
-                                    child: Icon(Icons.edit,
-                                        size: 18, color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                            ],
+                        CircleAvatar(
+                          radius: 55,
+                          backgroundImage: AssetImage(
+                              profileImagePath ?? 'assets/images/Avatar.png'),
+                        ),
+                        Positioned(
+                          bottom: 4,
+                          right: 4,
+                          child: InkWell(
+                            onTap: () {}, // Optional: add image picker
+                            child: const CircleAvatar(
+                              radius: 18,
+                              backgroundColor: Colors.blue,
+                              child: Icon(Icons.edit,
+                                  size: 18, color: Colors.white),
+                            ),
                           ),
-                        ),
-                        const Gap(16),
-                        Text(
-                          '${_firstNameController.text} ${_lastNameController.text}',
-                          style: const TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        const Gap(8),
-                        Text(
-                          _emailController.text,
-                          style:
-                              const TextStyle(fontSize: 16, color: Colors.grey),
                         ),
                       ],
                     ),
-                    const Gap(32),
-                    _listTile("First Name", _firstNameController.text,
-                        Icons.text_fields_sharp),
-                    const Gap(16),
+                  ),
+                  const Gap(16),
+                  Text(
+                    '${_firstNameController.text} ${_lastNameController.text}',
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  const Gap(8),
+                  Text(
+                    _emailController.text,
+                    style: const TextStyle(fontSize: 16, color: Colors.grey),
+                  ),
+                ],
+              ),
+              const Gap(32),
+              _listTile("First Name", _firstNameController.text,
+                  Icons.text_fields_sharp),
+              const Gap(16),
 
-                    _listTile("Last Name", _lastNameController.text,
-                        Icons.text_fields_sharp),
-                    const Gap(16),
+              _listTile("Last Name", _lastNameController.text,
+                  Icons.text_fields_sharp),
+              const Gap(16),
 
-                    _listTile("Email", _emailController.text, Icons.email),
-                    const Gap(16),
+              _listTile("Email", _emailController.text, Icons.email),
+              const Gap(16),
 
-                    _listTile(
-                        "Occuption", _occupationController.text, Icons.work),
-                    const Gap(16),
+              _listTile("Occuption", _occupationController.text, Icons.work),
+              const Gap(16),
 
-                    GestureDetector(
-                      onTap: () {
-                        CoreUtils.heroDialog(const LogoutPopup());
-                      },
-                      child: ListTile(
-                        title: Text(
-                          "LogOut",
-                          style: TextStyle(
-                              color: context.primary,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        leading: Icon(
-                          Icons.logout,
-                          color: context.primary,
-                        ),
-                      ),
-                    ),
-                  ],
+              GestureDetector(
+                onTap: () {
+                  CoreUtils.heroDialog(const LogoutPopup());
+                },
+                child: ListTile(
+                  title: Text(
+                    "LogOut",
+                    style: TextStyle(
+                        color: context.primary,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  leading: Icon(
+                    Icons.logout,
+                    color: context.primary,
+                  ),
                 ),
               ),
-            ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
