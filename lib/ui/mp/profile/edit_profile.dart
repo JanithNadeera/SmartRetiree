@@ -153,7 +153,7 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                     const Gap(16),
                     SubmitButton(
                       onPressed: _updateProfile,
-                      label: "Sign Up",
+                      label: "SAVE",
                     ),
                   ],
                 ),
