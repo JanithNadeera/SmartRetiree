@@ -45,8 +45,8 @@ class SplashScreen extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(
-              'assets/images/Cover.png',
-              width: 200,
+              'assets/images/sr-logo.png',
+              width: 300,
             ),
             const Gap(16),
             const LinearIndicator()

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:smart_retiree/shared_widgets/submit_button.dart';
 
 class NoEvents extends StatelessWidget {
@@ -17,7 +17,7 @@ class NoEvents extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Icon(
-            MingCute.aiming_2_fill,
+            MingCuteIcons.mgc_heart_crack_line,
             size: 80,
             color: Colors.grey,
           ),

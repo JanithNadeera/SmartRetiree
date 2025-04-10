@@ -92,6 +92,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 child: Column(
                   children: [
                     const Spacer(),
+                    Image.asset(
+                      'assets/images/sr-logo.png',
+                      width: 200,
+                    ),
+                    const Spacer(),
                     InputField(
                       controller: _emailController,
                       hintText: "Email",
@@ -115,6 +120,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                     const Gap(16),
                     const AuthFooter(isLogin: true),
+                    const Spacer(),
+                    const Spacer(),
                     const Spacer(),
                   ],
                 ),

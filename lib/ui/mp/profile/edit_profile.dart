@@ -9,6 +9,7 @@ import 'package:smart_retiree/shared_widgets/input_form_field.dart';
 import 'package:smart_retiree/shared_widgets/submit_button.dart';
 import 'package:smart_retiree/ui/mp/profile/widgets/profile_image.dart';
 import 'package:smart_retiree/utils/core_utils.dart';
+import 'package:smart_retiree/utils/loader.dart';
 import 'package:smart_retiree/utils/validators.dart';
 
 class EditProfile extends ConsumerStatefulWidget {
@@ -45,6 +46,7 @@ class _EditProfileState extends ConsumerState<EditProfile> {
     if (!_formKey.currentState!.validate()) return;
 
     try {
+      Loader.show(true);
       final updatedUser = user.copyWith(
         firstName: _firstNameController.text.trim(),
         lastName: _lastNameController.text.trim(),
@@ -62,6 +64,8 @@ class _EditProfileState extends ConsumerState<EditProfile> {
     } catch (e) {
       CoreUtils.showToast(
           type: ToastType.error, message: 'Error updating profile');
+    } finally {
+      Loader.show(false);
     }
   }
 
@@ -73,47 +77,49 @@ class _EditProfileState extends ConsumerState<EditProfile> {
       body: SafeArea(
         child: Form(
           key: _formKey,
-          child: ListView(
+          child: Padding(
             padding: const EdgeInsets.all(24),
-            children: [
-              ProfileImage(url: user.profilePhoto, onTap: () {}),
-              const SizedBox(height: 32),
-              InputField(
-                hintText: "First Name",
-                prefixIcon: Icons.person_outline_outlined,
-                controller: _firstNameController,
-                textInputType: TextInputType.name,
-                validator: Validators.validateName,
-              ),
-              const Gap(16),
-              InputField(
-                hintText: "Last Name",
-                prefixIcon: Icons.person_outline_outlined,
-                controller: _lastNameController,
-                textInputType: TextInputType.name,
-                validator: Validators.validateName,
-              ),
-              const Gap(16),
-              InputField(
-                hintText: "Email",
-                prefixIcon: Icons.email_outlined,
-                controller: _emailController,
-                textInputType: TextInputType.emailAddress,
-                readOnly: true,
-              ),
-              const Gap(16),
-              InputField(
-                hintText: "Occupation",
-                prefixIcon: Icons.work_outline_outlined,
-                controller: _occupationController,
-                textInputType: TextInputType.text,
-              ),
-              const Gap(16),
-              SubmitButton(
-                onPressed: () => _updateProfile(user),
-                label: "SAVE",
-              ),
-            ],
+            child: Column(
+              children: [
+                ProfileImage(url: user.profilePhoto, onTap: () {}),
+                const SizedBox(height: 32),
+                InputField(
+                  hintText: "First Name",
+                  prefixIcon: Icons.person_outline_outlined,
+                  controller: _firstNameController,
+                  textInputType: TextInputType.name,
+                  validator: Validators.validateName,
+                ),
+                const Gap(16),
+                InputField(
+                  hintText: "Last Name",
+                  prefixIcon: Icons.person_outline_outlined,
+                  controller: _lastNameController,
+                  textInputType: TextInputType.name,
+                  validator: Validators.validateName,
+                ),
+                const Gap(16),
+                InputField(
+                  hintText: "Email",
+                  prefixIcon: Icons.email_outlined,
+                  controller: _emailController,
+                  textInputType: TextInputType.emailAddress,
+                  readOnly: true,
+                ),
+                const Gap(16),
+                InputField(
+                  hintText: "Occupation",
+                  prefixIcon: Icons.work_outline_outlined,
+                  controller: _occupationController,
+                  textInputType: TextInputType.text,
+                ),
+                const Gap(16),
+                SubmitButton(
+                  onPressed: () => _updateProfile(user),
+                  label: "SAVE",
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -1,76 +1,104 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_retiree/models/app_user.dart';
 import 'package:smart_retiree/providers/user_provider.dart';
 import 'package:smart_retiree/shared_widgets/submit_button.dart';
 import 'package:smart_retiree/ui/mp/chat_room/widgets/user_avatar.dart';
+import 'package:smart_retiree/utils/loader.dart';
 import 'package:smart_retiree/utils/theme_extension.dart';
 
 class MembersPopup extends ConsumerWidget {
   const MembersPopup({
     super.key,
     required this.title,
-    required this.users,
+    required this.userIds,
   });
 
   final String title;
-  final List<AppUser> users;
+  final List<String> userIds;
+
+  Stream<List<AppUser>> _usersStream() {
+    if (userIds.isEmpty) return const Stream.empty();
+
+    return FirebaseFirestore.instance
+        .collection('users')
+        .where(FieldPath.documentId, whereIn: userIds)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => AppUser.fromMap(doc.id, doc.data()))
+            .toList());
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Center(
-      child: Container(
-        width: MediaQuery.of(context).size.width * .75,
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-        decoration: BoxDecoration(
-          color: context.primaryContainer,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              title,
-              style: context.headlineMedium,
-            ),
-            const SizedBox(height: 24),
-            ConstrainedBox(
-              constraints: const BoxConstraints(minHeight: 0, maxHeight: 300),
-              child: Material(
-                color: Colors.transparent,
-                child: ListView.builder(
-                  padding: const EdgeInsets.all(0),
-                  shrinkWrap: true,
-                  itemCount: users.length,
-                  itemBuilder: (_, index) {
-                    final user = users[index];
-                    final isCurrentUser =
-                        user.uid == ref.watch(userProvider)!.uid;
+      child: Material(
+        color: Colors.transparent,
+        child: Container(
+          width: MediaQuery.of(context).size.width * .75,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+          decoration: BoxDecoration(
+            color: context.primaryContainer,
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                title,
+                style: context.headlineMedium,
+              ),
+              const SizedBox(height: 24),
+              StreamBuilder<List<AppUser>>(
+                  stream: _usersStream(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: Loader.indicator());
+                    } else if (snapshot.hasError) {
+                      return const Center(child: Text('Error loading events'));
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Center(child: Text('No users found'));
+                    }
 
-                    return ListTile(
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 0),
-                      leading: UserAvatar(imageUrl: user.profilePhoto),
-                      title: Text(
-                        "${user.fullName} ${isCurrentUser ? "(You)" : ""}",
-                        style: context.headlineSmall,
-                      ),
-                      subtitle: Text(
-                        user.occupation,
-                        style: context.bodyMedium,
+                    final users = snapshot.data!;
+                    return ConstrainedBox(
+                      constraints:
+                          const BoxConstraints(minHeight: 0, maxHeight: 300),
+                      child: ListView.builder(
+                        padding: const EdgeInsets.all(0),
+                        shrinkWrap: true,
+                        itemCount: users.length,
+                        itemBuilder: (_, index) {
+                          final user = users[index];
+                          final isCurrentUser =
+                              user.uid == ref.watch(userProvider)!.uid;
+
+                          return ListTile(
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 0),
+                            leading: UserAvatar(imageUrl: user.profilePhoto),
+                            title: Text(
+                              "${user.fullName} ${isCurrentUser ? "(You)" : ""}",
+                              style: context.headlineSmall,
+                            ),
+                            subtitle: Text(
+                              user.occupation,
+                              style: context.bodyMedium,
+                            ),
+                          );
+                        },
                       ),
                     );
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(height: 24),
-            SubmitButton(
-              onPressed: () => Navigator.pop(context),
-              label: "Close",
-            )
-          ],
+                  }),
+              const SizedBox(height: 24),
+              SubmitButton(
+                onPressed: () => Navigator.pop(context),
+                label: "Close",
+              )
+            ],
+          ),
         ),
       ),
     );

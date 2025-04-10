@@ -151,7 +151,8 @@ class _SingleChatRoomScreenState extends ConsumerState<SingleChatRoomScreen> {
                         CoreUtils.heroDialog(
                           MembersPopup(
                             title: 'Chat Members',
-                            users: userMap.values.toList(),
+                            userIds:
+                                userMap.values.map((user) => user.uid).toList(),
                           ),
                         );
                       },

@@ -16,11 +16,13 @@ class UserAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CircleAvatar(
-      radius: 16,
-      backgroundColor: Colors.red[300],
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(radius),
       child: CachedNetworkImage(
+        fit: BoxFit.fill,
         imageUrl: imageUrl,
+        width: radius,
+        height: radius,
         placeholder: (context, url) => Loader.indicator(size: 10),
         errorWidget: (context, url, error) => const ShaderMaskWrapper(
           child: Icon(

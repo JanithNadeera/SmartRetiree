@@ -15,7 +15,6 @@ class EventCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Handle event tap
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -67,7 +66,9 @@ class EventCard extends StatelessWidget {
                     const SizedBox(height: 6),
                     Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 4),
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.black.withAlpha(15),
                         borderRadius: BorderRadius.circular(8),
@@ -75,7 +76,9 @@ class EventCard extends StatelessWidget {
                       child: Text(
                         event.type,
                         style: const TextStyle(
-                            fontSize: 12, fontWeight: FontWeight.w500),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   ],
@@ -92,8 +95,9 @@ class EventCard extends StatelessWidget {
                   height: 90,
                   width: 90,
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) =>
-                      const Icon(Icons.image_not_supported),
+                  errorBuilder: (context, error, stackTrace) => const Icon(
+                    Icons.image_not_supported,
+                  ),
                 ),
               ),
             ],

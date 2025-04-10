@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class CreateEventScreen extends ConsumerStatefulWidget {
   const CreateEventScreen({super.key});
 
   @override
-  _CreateEventScreenState createState() => _CreateEventScreenState();
+  ConsumerState<CreateEventScreen> createState() => _CreateEventScreenState();
 }
 
 class _CreateEventScreenState extends ConsumerState<CreateEventScreen> {
@@ -66,34 +67,43 @@ class _CreateEventScreenState extends ConsumerState<CreateEventScreen> {
   }
 
   Future<String> uploadImageToCloudinary(File imageFile) async {
-    const String cloudName = 'dqaeqrs2n';
-    const String uploadPreset = 'asela123456';
-    // const String apiKey = '724941716134316';
+    try {
+      Loader.show(true);
+      const String cloudName = 'dqaeqrs2n';
+      const String uploadPreset = 'asela123456';
+      // const String apiKey = '724941716134316';
 
-    final uri =
-        Uri.parse('https://api.cloudinary.com/v1_1/$cloudName/image/upload');
+      final uri =
+          Uri.parse('https://api.cloudinary.com/v1_1/$cloudName/image/upload');
 
-    final request = http.MultipartRequest('POST', uri)
-      ..fields['upload_preset'] = uploadPreset
-      ..files.add(await http.MultipartFile.fromPath('file', imageFile.path));
+      final request = http.MultipartRequest('POST', uri)
+        ..fields['upload_preset'] = uploadPreset
+        ..files.add(await http.MultipartFile.fromPath('file', imageFile.path));
 
-    final response = await request.send();
+      final response = await request.send();
 
-    // Read the response stream once and store it in a variable
-    final responseBody = await response.stream.bytesToString();
-    print("Cloudinary response: $responseBody");
+      // Read the response stream once and store it in a variable
+      final responseBody = await response.stream.bytesToString();
+      log("Cloudinary response: $responseBody");
 
-    if (response.statusCode == 200) {
-      print("SUCCESSFULLY UPLOADED IMAGE");
+      if (response.statusCode == 200) {
+        log("SUCCESSFULLY UPLOADED IMAGE");
 
-      // Parse the response body
-      final jsonResponse = jsonDecode(responseBody);
-      final imageUrl =
-          jsonResponse['secure_url']; // Get the URL of the uploaded image
+        // Parse the response body
+        final jsonResponse = jsonDecode(responseBody);
+        final imageUrl =
+            jsonResponse['secure_url']; // Get the URL of the uploaded image
 
-      return imageUrl;
-    } else {
-      throw Exception('Failed to upload image');
+        return imageUrl;
+      } else {
+        CoreUtils.showToast(
+            type: ToastType.error, message: 'Failed to upload image');
+        return '';
+      }
+    } catch (e) {
+      return '';
+    } finally {
+      Loader.show(false);
     }
   }
 
@@ -127,7 +137,7 @@ class _CreateEventScreenState extends ConsumerState<CreateEventScreen> {
       final event = AppEvent(
         id: '',
         name: _name!,
-        time: fullDateTime.toIso8601String(),
+        time: fullDateTime,
         location: _location!,
         type: _type!,
         imageUrl: imageUrl,
@@ -140,7 +150,8 @@ class _CreateEventScreenState extends ConsumerState<CreateEventScreen> {
 
       CoreUtils.showToast(
           type: ToastType.success, message: "🎉 Event created successfully!");
-      Navigator.of(context).pop();
+      CoreUtils.postFrameCall(() => Navigator.pop(context));
+
       // Optionally go back
     } catch (e) {
       CoreUtils.showToast(

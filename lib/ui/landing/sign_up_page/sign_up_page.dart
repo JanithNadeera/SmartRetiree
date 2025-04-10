@@ -63,6 +63,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: Column(
                   children: [
                     const Spacer(),
+                    Image.asset(
+                      'assets/images/sr-logo.png',
+                      width: 200,
+                    ),
+                    const Spacer(),
                     UserRoleSelector(
                       selected: userRole,
                       onSelect: (type) {
@@ -133,6 +138,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const Gap(16),
                     const AuthFooter(isLogin: false),
+                    const Spacer(),
                     const Spacer(),
                   ],
                 ),

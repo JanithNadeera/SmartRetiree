@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         navigatorKey: rootNavigatorKey,
         theme: lightTheme,
         darkTheme: darkTheme,
-        themeMode: ThemeMode.system,
+        themeMode: ThemeMode.light,
         home: const SplashScreen(),
       ),
     );

@@ -19,69 +19,72 @@ class ProfileScreen extends ConsumerWidget {
     return Scaffold(
       appBar: const CustomAppBar(title: 'My Profile', withShader: true),
       body: SafeArea(
-        child: ListView(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
-          children: [
-            ProfileImage(
-              url: user.profilePhoto,
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const EditProfile(),
+          child: Column(
+            children: [
+              ProfileImage(
+                url: user.profilePhoto,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const EditProfile(),
+                    ),
+                  );
+                },
+              ),
+              const Gap(16),
+              Text(
+                user.fullName,
+                style:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                user.email,
+                style: const TextStyle(fontSize: 14, color: Colors.grey),
+              ),
+              const Gap(32),
+              ProfileCard(
+                title: "First Name",
+                subtitle: user.firstName,
+                icon: Icons.text_fields_sharp,
+              ),
+              ProfileCard(
+                title: "Last Name",
+                subtitle: user.lastName,
+                icon: Icons.text_fields_sharp,
+              ),
+              ProfileCard(
+                title: "Email",
+                subtitle: user.email,
+                icon: Icons.email,
+              ),
+              ProfileCard(
+                title: "Occuption",
+                subtitle: user.occupation,
+                icon: Icons.work,
+              ),
+              GestureDetector(
+                onTap: () {
+                  CoreUtils.heroDialog(const LogoutPopup());
+                },
+                child: ListTile(
+                  title: Text(
+                    "Logout",
+                    style: TextStyle(
+                        color: context.primary,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
                   ),
-                );
-              },
-            ),
-            const Gap(16),
-            Text(
-              user.fullName,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              user.email,
-              style: const TextStyle(fontSize: 14, color: Colors.grey),
-            ),
-            const Gap(32),
-            ProfileCard(
-              title: "First Name",
-              subtitle: user.firstName,
-              icon: Icons.text_fields_sharp,
-            ),
-            ProfileCard(
-              title: "Last Name",
-              subtitle: user.lastName,
-              icon: Icons.text_fields_sharp,
-            ),
-            ProfileCard(
-              title: "Email",
-              subtitle: user.email,
-              icon: Icons.email,
-            ),
-            ProfileCard(
-              title: "Occuption",
-              subtitle: user.occupation,
-              icon: Icons.work,
-            ),
-            GestureDetector(
-              onTap: () {
-                CoreUtils.heroDialog(const LogoutPopup());
-              },
-              child: ListTile(
-                title: Text(
-                  "Logout",
-                  style: TextStyle(
-                      color: context.primary,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold),
-                ),
-                leading: Icon(
-                  Icons.logout,
-                  color: context.primary,
+                  leading: Icon(
+                    Icons.logout,
+                    color: context.primary,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

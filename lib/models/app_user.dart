@@ -73,7 +73,7 @@ class AppUser {
       email: email ?? this.email,
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
-      fullName: fullName ?? this.fullName,
+      fullName: "$firstName $lastName",
       occupation: occupation ?? this.occupation,
       profilePhoto: profilePhoto ?? this.profilePhoto,
       role: role ?? this.role,

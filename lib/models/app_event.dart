@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class AppEvent {
   final String id;
   final String name;
-  final String time;
+  final DateTime time;
   final String location;
   final String type;
   final String imageUrl;
@@ -27,12 +29,12 @@ class AppEvent {
     return AppEvent(
       id: uid,
       name: data['name'] ?? '',
-      time: data['datetime'] ?? '',
+      time: (data['time'] as Timestamp).toDate(),
       location: data['location'] ?? '',
       type: data['type'] ?? '',
       imageUrl: data['imageUrl'] ?? '',
       description: data['description'] ?? '',
-      createdAt: DateTime.parse(data['createdAt']),
+      createdAt: (data['createdAt'] as Timestamp).toDate(),
       createdBy: data['createdBy'] ?? '',
       members: List<String>.from(data['members'] ?? []),
     );
@@ -41,12 +43,12 @@ class AppEvent {
   Map<String, dynamic> toMap() {
     return {
       'name': name,
-      'time': time,
+      'time': Timestamp.fromDate(time),
       'location': location,
       'type': type,
       'imageUrl': imageUrl,
       'description': description,
-      'createdAt': createdAt,
+      'createdAt': Timestamp.fromDate(createdAt),
       'createdBy': createdBy,
       'members': members,
     };

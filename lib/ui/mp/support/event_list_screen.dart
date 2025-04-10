@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:smart_retiree/models/app_event.dart';
+import 'package:smart_retiree/shared_widgets/custom_appbar.dart';
+import 'package:smart_retiree/shared_widgets/shader_mask_wrapper.dart';
 import 'package:smart_retiree/ui/mp/support/upload_event.dart';
-import 'package:smart_retiree/ui/mp/support/widgets/chat_app_bar.dart';
 import 'package:smart_retiree/ui/mp/support/widgets/event_card.dart';
 import 'package:smart_retiree/ui/mp/support/widgets/no_events.dart';
 import 'package:smart_retiree/utils/loader.dart';
@@ -29,15 +30,28 @@ class _EventListScreenState extends State<EventListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: EventAppBar(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const CreateEventScreen(),
+      appBar: CustomAppBar(
+        title: "Events",
+        withShader: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const CreateEventScreen(),
+                ),
+              );
+            },
+            icon: const ShaderMaskWrapper(
+              child: Icon(
+                MingCuteIcons.mgc_add_circle_line,
+                size: 25,
+                color: Colors.white,
+              ),
             ),
-          );
-        },
+          ),
+        ],
       ),
       body: SafeArea(
         child: StreamBuilder<List<AppEvent>>(

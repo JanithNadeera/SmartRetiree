@@ -27,13 +27,12 @@ extension EventTypeColor on String {
   }
 }
 
-extension EventDateTimeFormat on String {
+extension EventDateTimeFormat on DateTime {
   String get formattedEventDateTime {
     try {
-      final dateTime = DateTime.parse(this); // Parse the string into DateTime
-      final date = DateFormat('yyyy/MM/dd').format(dateTime); // Format date
+      final date = DateFormat('yyyy/MM/dd').format(this); // Format date
       final time =
-          DateFormat('hh:mma').format(dateTime); // Format time (12-hour AM/PM)
+          DateFormat('hh:mma').format(this); // Format time (12-hour AM/PM)
       return 'Date: $date Time: $time';
     } catch (e) {
       return 'Invalid Date'; // In case of parsing error

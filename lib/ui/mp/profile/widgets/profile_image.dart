@@ -14,29 +14,33 @@ class ProfileImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        UserAvatar(
-          imageUrl: url,
-          radius: 55,
-        ),
-        Positioned(
-          bottom: 5,
-          right: 5,
-          child: GestureDetector(
-            onTap: onTap,
-            child: CircleAvatar(
-              radius: 20,
-              backgroundColor: context.primary,
-              child: const Icon(
-                Icons.edit,
-                size: 18,
-                color: Colors.white,
+    return SizedBox(
+      height: 125,
+      width: 125,
+      child: Stack(
+        children: [
+          UserAvatar(
+            imageUrl: url,
+            radius: 125,
+          ),
+          Positioned(
+            bottom: 2.5,
+            right: 2.5,
+            child: GestureDetector(
+              onTap: onTap,
+              child: CircleAvatar(
+                radius: 20,
+                backgroundColor: context.primary,
+                child: const Icon(
+                  Icons.edit,
+                  size: 18,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

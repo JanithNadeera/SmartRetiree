@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:smart_retiree/models/app_event.dart';
 import 'package:smart_retiree/models/app_user.dart';
 import 'package:smart_retiree/providers/user_provider.dart';
+import 'package:smart_retiree/shared_widgets/custom_appbar.dart';
+import 'package:smart_retiree/shared_widgets/members_popup.dart';
+import 'package:smart_retiree/shared_widgets/shader_mask_wrapper.dart';
 import 'package:smart_retiree/shared_widgets/submit_button.dart';
+import 'package:smart_retiree/utils/core_utils.dart';
+import 'package:smart_retiree/utils/loader.dart';
 import 'package:smart_retiree/utils/string_extension.dart';
 
 class EventDetailsScreen extends ConsumerStatefulWidget {
@@ -26,51 +31,92 @@ class _EventDetailsScreenState extends ConsumerState<EventDetailsScreen> {
     _currentUser = ref.read(userProvider)!;
   }
 
-  // Future<void> _joinEvent(BuildContext context, String eventName) async {
-  //   print("EVENT NAME: $eventName");
+  void _joinEvent() async {
+    try {
+      Loader.show(true);
+      final docRef =
+          FirebaseFirestore.instance.collection('events').doc(widget.event.id);
 
-  //   try {
-  //     final querySnapshot = await FirebaseFirestore.instance
-  //         .collection('events')
-  //         .where('name', isEqualTo: eventName)
-  //         .limit(1)
-  //         .get();
+      if (!(widget.event.members.contains(_currentUser.uid))) {
+        await docRef.update({
+          'members': [...widget.event.members, _currentUser.uid]
+        });
+      }
+      CoreUtils.showToast(
+          type: ToastType.success, message: 'Successfully joined');
+    } catch (e) {
+      CoreUtils.showToast(
+          type: ToastType.error, message: 'Failed to join this event: $e');
+    } finally {
+      Loader.show(false);
+    }
+  }
 
-  //     if (querySnapshot.docs.isNotEmpty) {
-  //       final docRef = querySnapshot.docs.first.reference;
-  //       print(querySnapshot.docs.first.data());
-  //       await docRef.update({
-  //         'joinedUsers': FieldValue.arrayUnion([_currentUser.uid]),
-  //       });
-  //       final updatedJoinedUsers =
-  //           (await docRef.get()).data()?['joinedUsers'] ?? [];
-  //       print("Updated joinedUsers List: $updatedJoinedUsers");
+  void _joinRevoke() async {
+    try {
+      Loader.show(true);
+      final docRef =
+          FirebaseFirestore.instance.collection('events').doc(widget.event.id);
 
-  //       setState(() {
-  //         isJoined = true;
-  //       });
+      if ((widget.event.members.contains(_currentUser.uid))) {
+        await docRef.update({
+          'members': [widget.event.members.remove(_currentUser.uid)]
+        });
+      }
+      CoreUtils.showToast(
+          type: ToastType.success,
+          message: 'Successfully revoke from this event');
+    } catch (e) {
+      CoreUtils.showToast(
+          type: ToastType.error,
+          message: 'Failed to revoke from this event: $e');
+    } finally {
+      Loader.show(false);
+    }
+  }
 
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         const SnackBar(content: Text('Successfully joined the event!')),
-  //       );
-  //     } else {
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         const SnackBar(content: Text('Event not found.')),
-  //       );
-  //     }
-  //   } catch (e) {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(content: Text('Failed to join event: $e')),
-  //     );
-  //   }
-  // }
+  void _deleteEvent() async {
+    try {
+      Loader.show(true);
+      final docRef =
+          FirebaseFirestore.instance.collection('events').doc(widget.event.id);
+
+      await docRef.delete();
+      CoreUtils.showToast(
+          type: ToastType.success, message: 'Successfully delete event');
+      CoreUtils.postFrameCall(() => Navigator.pop(context));
+    } catch (e) {
+      CoreUtils.showToast(
+          type: ToastType.error, message: 'Failed to delete this event: $e');
+    } finally {
+      Loader.show(false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Event Details"),
-        backgroundColor: Colors.redAccent,
+      appBar: CustomAppBar(
+        title: "Event Details",
+        actions: [
+          IconButton(
+            icon: const ShaderMaskWrapper(
+              child: Icon(
+                MingCuteIcons.mgc_group_line,
+                size: 25,
+                color: Colors.white,
+              ),
+            ),
+            onPressed: () {
+              CoreUtils.heroDialog(
+                MembersPopup(
+                  title: 'Event Joiners',
+                  userIds: widget.event.members,
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -140,10 +186,37 @@ class _EventDetailsScreenState extends ConsumerState<EventDetailsScreen> {
               widget.event.description,
               style: const TextStyle(fontSize: 15),
             ),
+            const SizedBox(
+              height: 40,
+              width: double.infinity,
+            ),
+            if (widget.event.createdBy != _currentUser.uid)
+              Align(
+                alignment: Alignment.center,
+                child: SubmitButton(
+                    onPressed: () {
+                      if (widget.event.members.contains(_currentUser.uid)) {
+                        _joinRevoke();
+                      } else {
+                        _joinEvent();
+                      }
+                    },
+                    label: widget.event.members.contains(_currentUser.uid)
+                        ? 'Revoke'
+                        : 'Join Event'),
+              ),
+            if (widget.event.createdBy == _currentUser.uid)
+              Align(
+                alignment: Alignment.center,
+                child: SubmitButton(
+                    onPressed: () {
+                      _deleteEvent();
+                    },
+                    label: 'Delete Event'),
+              ),
           ],
         ),
       ),
-      bottomNavigationBar: SubmitButton(onPressed: () {}, label: 'Join Event'),
     );
   }
 }
