@@ -61,11 +61,11 @@ class _EventListScreenState extends State<EventListScreen> {
   Color _getEventColor(String type) {
     switch (type) {
       case 'Education':
-        return Colors.blue.shade100;
+        return Colors.deepOrange.shade200;
       case 'Environment':
-        return Colors.green.shade100;
+        return Colors.deepPurple.shade200;
       case 'Health':
-        return Colors.yellow.shade100;
+        return Colors.pink.shade200;
       default:
         return Colors.grey.shade200;
     }
