@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:ming_cute_icons/ming_cute_icons.dart';
 
 class CommentInputField extends StatelessWidget {
   final TextEditingController controller;
@@ -63,7 +63,7 @@ class CommentInputField extends StatelessWidget {
                     BorderRadius.circular(4), // Optional: Rounded corners
               ),
               child: const Icon(
-                MingCute.send_plane_line,
+                MingCuteIcons.mgc_send_line,
                 color: Colors.white,
                 size: 22.5,
               ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:smart_retiree/shared_widgets/shader_mask_wrapper.dart';
 import 'package:smart_retiree/utils/theme_extension.dart';
-import 'package:icons_plus/icons_plus.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HomeAppBar({super.key});
@@ -30,7 +30,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           onPressed: () {},
           icon: const ShaderMaskWrapper(
             child: Icon(
-              MingCute.add_circle_line,
+              MingCuteIcons.mgc_add_circle_line,
               size: 25,
               color: Colors.white,
             ),
@@ -40,7 +40,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           onPressed: () {},
           icon: const ShaderMaskWrapper(
             child: Icon(
-              MingCute.search_3_line,
+              MingCuteIcons.mgc_search_3_line,
               size: 25,
               color: Colors.white,
             ),
@@ -50,7 +50,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           onPressed: () {},
           icon: const ShaderMaskWrapper(
             child: Icon(
-              MingCute.notification_line,
+              MingCuteIcons.mgc_notification_line,
               size: 25,
               color: Colors.white,
             ),
