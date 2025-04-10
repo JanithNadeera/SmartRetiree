@@ -26,6 +26,8 @@ dependencies:
   loader_overlay: ^5.0.0
   flutter_riverpod: ^2.6.1
   google_fonts: ^6.2.1
+  chatview: ^2.4.0
+  intl: ^0.20.2
 
 dev_dependencies:
   flutter_test:

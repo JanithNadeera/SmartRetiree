@@ -57,10 +57,12 @@ class _InputFieldState extends State<InputField> {
         inputFormatters: widget.inputFormatters,
         validator: widget.validator,
         decoration: InputDecoration(
+          contentPadding: const EdgeInsets.symmetric(horizontal: 8),
           labelText: widget.labelText,
           hintText: widget.hintText,
           counterText: "",
-          prefixIcon: Icon(widget.prefixIcon),
+          prefixIcon:
+              widget.prefixIcon != null ? Icon(widget.prefixIcon) : null,
           suffixIcon: widget.obscureText
               ? IconButton(
                   onPressed: () => setState(() => isHide = !isHide),

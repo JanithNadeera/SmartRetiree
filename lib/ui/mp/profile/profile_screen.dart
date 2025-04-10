@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:smart_retiree/shared_widgets/custom_appbar.dart';
 import 'package:smart_retiree/shared_widgets/logout_popup.dart';
 import 'package:smart_retiree/ui/mp/profile/edit_profile.dart';
 import 'package:smart_retiree/utils/core_utils.dart';
@@ -59,45 +60,29 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   _listTile(String title, String subtitle, IconData icon) {
-    return ListTile(
-      title: Text(
-        title,
-        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-      ),
-      subtitle: Text(
-        subtitle,
-        style: const TextStyle(
-          color: Colors.grey,
-          fontSize: 15,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16.0),
+      child: ListTile(
+        title: Text(
+          title,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
+        subtitle: Text(
+          subtitle,
+          style: const TextStyle(
+            color: Colors.grey,
+            fontSize: 18,
+          ),
+        ),
+        leading: Icon(icon),
       ),
-      leading: Icon(icon),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text('My Profile'),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        foregroundColor: Colors.black,
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const EditProfile(),
-                ),
-              );
-            },
-            icon: const Icon(Icons.edit),
-          ),
-        ],
-      ),
+      appBar: const CustomAppBar(title: 'My Profile', withShader: true),
       body:
           // isLoading
           //     ? const Center(child: CircularProgressIndicator())
@@ -123,7 +108,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           bottom: 4,
                           right: 4,
                           child: InkWell(
-                            onTap: () {}, // Optional: add image picker
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const EditProfile(),
+                                ),
+                              );
+                            }, // Optional: add image picker
                             child: const CircleAvatar(
                               radius: 18,
                               backgroundColor: Colors.blue,
@@ -141,38 +133,45 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     style: const TextStyle(
                         fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                  const Gap(8),
+                  // const Gap(4),
                   Text(
                     _emailController.text,
-                    style: const TextStyle(fontSize: 16, color: Colors.grey),
+                    style: const TextStyle(fontSize: 14, color: Colors.grey),
                   ),
                 ],
               ),
               const Gap(32),
-              _listTile("First Name", _firstNameController.text,
-                  Icons.text_fields_sharp),
-              const Gap(16),
+              _listTile(
+                "First Name",
+                _firstNameController.text,
+                Icons.text_fields_sharp,
+              ),
+              _listTile(
+                "Last Name",
+                _lastNameController.text,
+                Icons.text_fields_sharp,
+              ),
 
-              _listTile("Last Name", _lastNameController.text,
-                  Icons.text_fields_sharp),
-              const Gap(16),
-
-              _listTile("Email", _emailController.text, Icons.email),
-              const Gap(16),
-
-              _listTile("Occuption", _occupationController.text, Icons.work),
-              const Gap(16),
-
+              _listTile(
+                "Email",
+                _emailController.text,
+                Icons.email,
+              ),
+              _listTile(
+                "Occuption",
+                _occupationController.text,
+                Icons.work,
+              ),
               GestureDetector(
                 onTap: () {
                   CoreUtils.heroDialog(const LogoutPopup());
                 },
                 child: ListTile(
                   title: Text(
-                    "LogOut",
+                    "Logout",
                     style: TextStyle(
                         color: context.primary,
-                        fontSize: 20,
+                        fontSize: 18,
                         fontWeight: FontWeight.bold),
                   ),
                   leading: Icon(

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
@@ -28,10 +30,13 @@ class SplashScreen extends ConsumerWidget {
           );
         });
       },
-      error: (error, stackTrace) => CoreUtils.showToast(
-        type: ToastType.error,
-        message: 'Error: $error',
-      ),
+      error: (error, stackTrace) {
+        log(error.toString());
+        CoreUtils.showToast(
+          type: ToastType.error,
+          message: 'Error: $error',
+        );
+      },
       loading: () {},
     );
     return Scaffold(

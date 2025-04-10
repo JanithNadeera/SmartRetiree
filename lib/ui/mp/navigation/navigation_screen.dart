@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:smart_retiree/ui/mp/forum/forum_screen.dart';
+import 'package:smart_retiree/ui/mp/chat_room/chat_rooms_screen.dart';
 import 'package:smart_retiree/ui/mp/home/home_screen.dart';
 import 'package:smart_retiree/ui/mp/profile/profile_screen.dart';
 import 'package:smart_retiree/ui/mp/support/support_screen.dart';
@@ -19,14 +19,14 @@ class _NavigationScreenState extends State<NavigationScreen> {
   int activeIndex = 0;
   final icons = [
     (MingCute.rss_line, MingCute.rss_fill, "Feed"),
-    (MingCute.chat_1_line, MingCute.chat_1_fill, "Forum"),
-    (MingCute.hand_heart_line, MingCute.hand_heart_fill, "Support"),
+    (MingCute.chat_1_line, MingCute.chat_1_fill, "Connect"),
+    (MingCute.hand_heart_line, MingCute.hand_heart_fill, "Events"),
     (MingCute.user_5_line, MingCute.user_5_fill, "Profile"),
   ];
 
   final screens = [
     const HomeScreen(),
-    const ForumScreen(),
+    const ChatRoomsScreen(),
     const SupportScreen(),
     const ProfileScreen()
   ];
