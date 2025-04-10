@@ -5,7 +5,7 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:smart_retiree/ui/mp/forum/forum_screen.dart';
 import 'package:smart_retiree/ui/mp/home/home_screen.dart';
 import 'package:smart_retiree/ui/mp/profile/profile_screen.dart';
-import 'package:smart_retiree/ui/mp/support/support_screen.dart';
+import 'package:smart_retiree/ui/mp/support/event_list_screen.dart';
 import 'package:smart_retiree/utils/theme_extension.dart';
 
 class NavigationScreen extends StatefulWidget {
@@ -27,7 +27,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
   final screens = [
     const HomeScreen(),
     const ForumScreen(),
-    const SupportScreen(),
+    EventListScreen(),
     const ProfileScreen()
   ];
   @override
