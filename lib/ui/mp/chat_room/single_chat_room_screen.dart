@@ -4,14 +4,18 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:smart_retiree/models/app_user.dart';
 import 'package:smart_retiree/models/chat_message.dart';
 import 'package:smart_retiree/models/chat_room.dart';
 import 'package:smart_retiree/providers/user_provider.dart';
 import 'package:smart_retiree/shared_widgets/custom_appbar.dart';
+import 'package:smart_retiree/shared_widgets/members_popup.dart';
+import 'package:smart_retiree/shared_widgets/shader_mask_wrapper.dart';
+import 'package:smart_retiree/ui/mp/chat_room/widgets/chat_bubble.dart';
+import 'package:smart_retiree/ui/mp/chat_room/widgets/date_separator.dart';
+import 'package:smart_retiree/ui/mp/chat_room/widgets/message_input.dart';
 import 'package:smart_retiree/utils/core_utils.dart';
-import 'package:smart_retiree/utils/theme_extension.dart';
 
 class SingleChatRoomScreen extends ConsumerStatefulWidget {
   final ChatRoom chatRoom;
@@ -83,7 +87,6 @@ class _SingleChatRoomScreenState extends ConsumerState<SingleChatRoomScreen> {
       setState(() => _isLoading = false);
       return;
     }
-
     try {
       final querySnapshot = await FirebaseFirestore.instance
           .collection('users')
@@ -212,129 +215,6 @@ class _SingleChatRoomScreenState extends ConsumerState<SingleChatRoomScreen> {
     }
   }
 
-  String _getUserName(String userId) {
-    final user = _users.firstWhere(
-      (u) => u.uid == userId,
-      orElse: () => AppUser.empty(userId),
-    );
-    return user.fullName;
-  }
-
-  Widget _buildMessageItem(ChatMessage message) {
-    final isCurrentUser = message.sendBy == _currentUser.uid;
-    final time = DateFormat('h:mm a').format(message.createdAt);
-    // final date = DateFormat('MMM d').format(message.createdAt);
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-      child: Row(
-        mainAxisAlignment:
-            isCurrentUser ? MainAxisAlignment.end : MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (!isCurrentUser) ...[
-            CircleAvatar(
-              radius: 16,
-              backgroundColor: Colors.grey[300],
-              backgroundImage: _getUserProfileImage(message.sendBy),
-              child: _getUserProfileImage(message.sendBy) == null
-                  ? Text(_getUserName(message.sendBy)[0])
-                  : null,
-            ),
-            const SizedBox(width: 8),
-          ],
-          Flexible(
-            child: Container(
-              constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.75,
-              ),
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 10,
-              ),
-              decoration: BoxDecoration(
-                color: isCurrentUser
-                    ? context.primary.withAlpha(200)
-                    : Colors.grey[300],
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (!isCurrentUser)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 4.0),
-                      child: Text(
-                        _getUserName(message.sendBy),
-                        style: TextStyle(
-                          color: context.primary,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ),
-                  Text(
-                    message.message,
-                    style: TextStyle(
-                      color: isCurrentUser ? Colors.white : Colors.black54,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        time,
-                        style: TextStyle(
-                          color:
-                              isCurrentUser ? Colors.white : Colors.grey[500],
-                          fontSize: 10,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-          if (isCurrentUser) const SizedBox(width: 4),
-        ],
-      ),
-    );
-  }
-
-  ImageProvider? _getUserProfileImage(String userId) {
-    final user = _users.firstWhere(
-      (u) => u.uid == userId,
-      orElse: () => AppUser.empty(userId),
-    );
-
-    return user.profilePhoto != null ? NetworkImage(user.profilePhoto!) : null;
-  }
-
-  Widget _buildDateSeparator(DateTime date) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 16),
-      child: Row(
-        children: [
-          const Expanded(child: Divider()),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Text(
-              DateFormat('MMMM d, yyyy').format(date),
-              style: TextStyle(
-                color: Colors.grey[600],
-                fontSize: 12,
-              ),
-            ),
-          ),
-          const Expanded(child: Divider()),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
@@ -349,55 +229,24 @@ class _SingleChatRoomScreenState extends ConsumerState<SingleChatRoomScreen> {
         title: widget.chatRoom.name,
         actions: [
           IconButton(
-            icon: const Icon(Icons.people),
+            icon: const ShaderMaskWrapper(
+              child: Icon(
+                MingCute.group_fill,
+                size: 25,
+                color: Colors.white,
+              ),
+            ),
             onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: const Text('Chat Members'),
-                  content: SizedBox(
-                    width: double.maxFinite,
-                    height: 200,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: _users.length,
-                      itemBuilder: (context, index) {
-                        final user = _users[index];
-                        final isCurrentUser = user.uid == _currentUser.uid;
-
-                        return ListTile(
-                          leading: CircleAvatar(
-                            backgroundImage: user.profilePhoto != null
-                                ? NetworkImage(user.profilePhoto!)
-                                : null,
-                            child: user.profilePhoto == null
-                                ? Text(user.firstName[0])
-                                : null,
-                          ),
-                          title: Text(
-                            isCurrentUser
-                                ? '${user.fullName} (You)'
-                                : user.fullName,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: const Text('Close'),
-                    ),
-                  ],
-                ),
-              );
+              CoreUtils.heroDialog(MembersPopup(
+                title: 'Chat Members',
+                users: _users,
+              ));
             },
           ),
         ],
       ),
       body: Column(
         children: [
-          // Message list
           Expanded(
             child: _messages.isEmpty
                 ? Center(
@@ -425,85 +274,23 @@ class _SingleChatRoomScreenState extends ConsumerState<SingleChatRoomScreen> {
                       return Column(
                         children: [
                           if (showDateSeparator)
-                            _buildDateSeparator(message.createdAt),
-                          _buildMessageItem(message),
+                            DateSeparator(date: message.createdAt),
+                          ChatBubble(
+                            message: message,
+                            user: _users.firstWhere(
+                              (u) => u.uid == message.sendBy,
+                              orElse: () => AppUser.empty(message.sendBy),
+                            ),
+                          )
                         ],
                       );
                     },
                   ),
           ),
-
-          // Message input
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 8.0,
-              vertical: 12.0,
-            ),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  offset: const Offset(0, -2),
-                  blurRadius: 4,
-                  color: Colors.black.withAlpha(25),
-                ),
-              ],
-            ),
-            child: SafeArea(
-              child: Row(
-                children: [
-                  // IconButton(
-                  //   icon: const Icon(Icons.attach_file),
-                  //   onPressed: () {
-                  //     ScaffoldMessenger.of(context).showSnackBar(
-                  //       const SnackBar(
-                  //         content: Text('File attachment not implemented yet'),
-                  //       ),
-                  //     );
-                  //   },
-                  // ),
-                  Expanded(
-                    child: Container(
-                      height: 50,
-                      margin: const EdgeInsets.only(left: 8),
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFF5F6F7),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: TextField(
-                        controller: _messageController,
-                        focusNode: _focusNode,
-                        style: const TextStyle(
-                            color: Color(0xFF15294B), fontSize: 14),
-                        decoration: const InputDecoration(
-                          filled: false,
-                          hintText: "Type a message",
-                          hintStyle:
-                              TextStyle(color: Color(0xFF7A8699), fontSize: 14),
-                          contentPadding: EdgeInsets.symmetric(horizontal: 8),
-                          border: InputBorder.none,
-                          disabledBorder: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          errorBorder: InputBorder.none,
-                        ),
-                        textCapitalization: TextCapitalization.sentences,
-                        keyboardType: TextInputType.multiline,
-                        maxLines: 5,
-                        minLines: 1,
-                        onSubmitted: (_) => _sendMessage(),
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.send),
-                    color: context.primary,
-                    onPressed: _sendMessage,
-                  ),
-                ],
-              ),
-            ),
+          MessageInput(
+            controller: _messageController,
+            focusNode: _focusNode,
+            sendMessage: _sendMessage,
           ),
         ],
       ),

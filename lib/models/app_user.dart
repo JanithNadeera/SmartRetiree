@@ -8,7 +8,7 @@ class AppUser {
   final String lastName;
   final String fullName;
   final String occupation;
-  final String? profilePhoto;
+  final String profilePhoto;
   final UserRole role;
 
   AppUser({
@@ -18,7 +18,7 @@ class AppUser {
     required this.lastName,
     this.fullName = '',
     required this.occupation,
-    this.profilePhoto,
+    required this.profilePhoto,
     required this.role,
   });
 
@@ -30,7 +30,8 @@ class AppUser {
       lastName: map['last_name'] ?? '',
       fullName: "${map['first_name'] ?? ''} ${map['last_name'] ?? ''}".trim(),
       occupation: map['occupation'] ?? '',
-      profilePhoto: map['profile_photo'],
+      profilePhoto:
+          map['profile_photo'] ?? 'https://www.gravatar.com/avatar/?d=mp',
       role: (map['user_role'] as String).role,
     );
   }
@@ -51,7 +52,7 @@ class AppUser {
         firstName = "Unknown",
         lastName = "User",
         occupation = "",
-        profilePhoto = "",
+        profilePhoto = "https://www.gravatar.com/avatar/?d=mp",
         role = UserRole.retiree,
         uid = id,
         fullName = "Unknown User";
