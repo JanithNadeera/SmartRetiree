@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:smart_retiree/shared_widgets/input_form_field.dart';
 import 'package:smart_retiree/utils/theme_extension.dart';
 import 'package:smart_retiree/utils/validators.dart';
@@ -32,6 +33,7 @@ class _CreateNewChatPopupState extends State<CreateNewChatPopup> {
             borderRadius: BorderRadius.circular(16),
           ),
           child: Material(
+            color: Colors.transparent,
             child: Form(
               key: _formKey,
               child: Column(
@@ -47,14 +49,17 @@ class _CreateNewChatPopupState extends State<CreateNewChatPopup> {
                     radius: 45,
                     backgroundColor: Colors.red.shade100,
                     child: Icon(
-                      Icons.logout_rounded,
+                      MingCuteIcons.mgc_group_3_fill,
                       size: 40,
                       color: context.primary,
                     ),
                   ),
                   const SizedBox(height: 30),
-                  SizedBox(
-                    height: 50,
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      minHeight: 50,
+                      maxHeight: 100,
+                    ),
                     child: InputField(
                       controller: widget.controller,
                       hintText: "Enter room name",

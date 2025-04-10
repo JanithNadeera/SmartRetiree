@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:smart_retiree/models/chat_room.dart';
 import 'package:smart_retiree/providers/user_provider.dart';
 import 'package:smart_retiree/shared_widgets/create_new_chat_popup.dart';
 import 'package:smart_retiree/shared_widgets/custom_appbar.dart';
-import 'package:smart_retiree/shared_widgets/submit_button.dart';
+import 'package:smart_retiree/shared_widgets/shader_mask_wrapper.dart';
 import 'package:smart_retiree/ui/mp/chat_room/single_chat_room_screen.dart';
+import 'package:smart_retiree/ui/mp/chat_room/widgets/chat_room_card.dart';
+import 'package:smart_retiree/ui/mp/chat_room/widgets/no_chat_room.dart';
 import 'package:smart_retiree/utils/core_utils.dart';
 import 'package:smart_retiree/utils/loader.dart';
 
@@ -19,11 +22,6 @@ class ChatRoomsScreen extends ConsumerStatefulWidget {
 
 class _ChatRoomsScreenState extends ConsumerState<ChatRoomsScreen> {
   final _newRoomController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   void dispose() {
@@ -60,7 +58,13 @@ class _ChatRoomsScreenState extends ConsumerState<ChatRoomsScreen> {
 
       _newRoomController.clear();
       if (mounted) {
-        _openChatRoom(newRoom.copyWith(id: docRef.id));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SingleChatRoomScreen(
+                chatRoom: (newRoom.copyWith(id: docRef.id))),
+          ),
+        );
       }
     } catch (e) {
       CoreUtils.showToast(
@@ -70,27 +74,31 @@ class _ChatRoomsScreenState extends ConsumerState<ChatRoomsScreen> {
     }
   }
 
-  void _openChatRoom(ChatRoom chatRoom) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => SingleChatRoomScreen(chatRoom: chatRoom),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(title: "Gatherings", withShader: true),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => CoreUtils.heroDialog(
-          CreateNewChatPopup(
-            controller: _newRoomController,
-            onCreate: _createNewChatRoom,
+      appBar: CustomAppBar(
+        title: "Gatherings",
+        withShader: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              CoreUtils.heroDialog(
+                CreateNewChatPopup(
+                  controller: _newRoomController,
+                  onCreate: _createNewChatRoom,
+                ),
+              );
+            },
+            icon: const ShaderMaskWrapper(
+              child: Icon(
+                MingCuteIcons.mgc_add_circle_line,
+                size: 25,
+                color: Colors.white,
+              ),
+            ),
           ),
-        ),
-        child: const Icon(Icons.add),
+        ],
       ),
       body: SafeArea(
         child: StreamBuilder<List<ChatRoom>>(
@@ -101,7 +109,14 @@ class _ChatRoomsScreenState extends ConsumerState<ChatRoomsScreen> {
             } else if (snapshot.hasError) {
               return const Center(child: Text('Error loading chat rooms'));
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return _buildEmptyState();
+              return NoChatRoom(
+                onTap: () => CoreUtils.heroDialog(
+                  CreateNewChatPopup(
+                    controller: _newRoomController,
+                    onCreate: _createNewChatRoom,
+                  ),
+                ),
+              );
             }
 
             final chatRooms = snapshot.data!;
@@ -110,75 +125,12 @@ class _ChatRoomsScreenState extends ConsumerState<ChatRoomsScreen> {
               itemCount: chatRooms.length,
               itemBuilder: (context, index) {
                 final room = chatRooms[index];
-                return _buildChatRoomItem(room);
+                return ChatRoomCard(chatRoom: room);
               },
             );
           },
         ),
       ),
-    );
-  }
-
-  Widget _buildEmptyState() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(
-            Icons.chat_bubble_outline,
-            size: 80,
-            color: Colors.grey,
-          ),
-          const SizedBox(height: 16),
-          const Text(
-            'No chat rooms available',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 8),
-          const Text(
-            'Create a new chat room to get started',
-            style: TextStyle(color: Colors.grey),
-          ),
-          const SizedBox(height: 24),
-          SubmitButton(
-            onPressed: () => CoreUtils.heroDialog(
-              CreateNewChatPopup(
-                controller: _newRoomController,
-                onCreate: _createNewChatRoom,
-              ),
-            ),
-            label: 'Create Chat Room',
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _buildChatRoomItem(ChatRoom room) {
-    return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      leading: room.image.isNotEmpty
-          ? CircleAvatar(
-              backgroundImage: NetworkImage(room.image),
-            )
-          : CircleAvatar(
-              backgroundColor: Theme.of(context).primaryColor,
-              child: Text(
-                room.name.isNotEmpty ? room.name[0].toUpperCase() : '?',
-                style: const TextStyle(color: Colors.white),
-              ),
-            ),
-      title: Text(
-        room.name,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      subtitle: Text('${room.members.length} members'),
-      onTap: () => _openChatRoom(room),
     );
   }
 }
