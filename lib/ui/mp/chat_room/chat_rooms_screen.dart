@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:smart_retiree/models/chat_room.dart';
 import 'package:smart_retiree/providers/user_provider.dart';
 import 'package:smart_retiree/shared_widgets/create_new_chat_popup.dart';
@@ -92,7 +92,7 @@ class _ChatRoomsScreenState extends ConsumerState<ChatRoomsScreen> {
             },
             icon: const ShaderMaskWrapper(
               child: Icon(
-                MingCute.add_circle_line,
+                MingCuteIcons.mgc_add_circle_line,
                 size: 25,
                 color: Colors.white,
               ),

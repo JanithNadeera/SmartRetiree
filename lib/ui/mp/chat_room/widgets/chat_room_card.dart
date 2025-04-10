@@ -15,14 +15,13 @@ class ChatRoomCard extends StatelessWidget {
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       leading: CircleAvatar(
         backgroundColor: context.primary,
-        backgroundImage:
-            (chatRoom.image.isNotEmpty) ? NetworkImage(chatRoom.image) : null,
-        child: (chatRoom.image.isEmpty)
-            ? Text(
-                chatRoom.name.initials,
-                style: context.titleMedium.copyWith(color: Colors.white),
-              )
-            : null,
+        child: Text(
+          chatRoom.name.initials,
+          style: context.titleMedium.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       title: Text(
         chatRoom.name,

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_retiree/models/app_user.dart';
 import 'package:smart_retiree/providers/user_provider.dart';
 import 'package:smart_retiree/shared_widgets/submit_button.dart';
-import 'package:smart_retiree/utils/string_extension.dart';
+import 'package:smart_retiree/ui/mp/chat_room/widgets/user_avatar.dart';
 import 'package:smart_retiree/utils/theme_extension.dart';
 
 class MembersPopup extends ConsumerWidget {
@@ -51,19 +51,7 @@ class MembersPopup extends ConsumerWidget {
                     return ListTile(
                       contentPadding: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 0),
-                      leading: CircleAvatar(
-                        backgroundColor: context.primary,
-                        backgroundImage: user.profilePhoto != null
-                            ? NetworkImage(user.profilePhoto!)
-                            : null,
-                        child: user.profilePhoto == null
-                            ? Text(
-                                user.fullName.initials,
-                                style: context.titleMedium
-                                    .copyWith(color: Colors.white),
-                              )
-                            : null,
-                      ),
+                      leading: UserAvatar(imageUrl: user.profilePhoto),
                       title: Text(
                         "${user.fullName} ${isCurrentUser ? "(You)" : ""}",
                         style: context.headlineSmall,

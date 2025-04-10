@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:smart_retiree/ui/mp/home/widgets/action_button.dart';
 import 'package:smart_retiree/ui/mp/home/widgets/comment_bottom_sheet.dart';
 import 'package:smart_retiree/utils/core_utils.dart';
@@ -16,14 +16,14 @@ class PostActions extends StatelessWidget {
         children: [
           Expanded(
             child: ActionButton(
-              icon: MingCute.heart_line,
+              icon: MingCuteIcons.mgc_heart_line,
               label: "Like",
               onTap: () {},
             ),
           ),
           Expanded(
             child: ActionButton(
-              icon: MingCute.comment_2_line,
+              icon: MingCuteIcons.mgc_comment_2_line,
               label: "Comment",
               onTap: () {
                 CoreUtils.showBottomSheet(const CommentsBottomSheet());

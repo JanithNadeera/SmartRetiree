@@ -57,7 +57,7 @@ class _InputFieldState extends State<InputField> {
         inputFormatters: widget.inputFormatters,
         validator: widget.validator,
         decoration: InputDecoration(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
           labelText: widget.labelText,
           hintText: widget.hintText,
           counterText: "",

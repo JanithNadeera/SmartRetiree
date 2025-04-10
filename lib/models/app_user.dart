@@ -1,5 +1,6 @@
-import 'package:smart_retiree/utils/user_role_selector.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:smart_retiree/utils/string_extension.dart';
+import 'package:smart_retiree/utils/user_role_selector.dart';
 
 class AppUser {
   final String uid;
@@ -56,4 +57,26 @@ class AppUser {
         role = UserRole.retiree,
         uid = id,
         fullName = "Unknown User";
+
+  AppUser copyWith({
+    String? uid,
+    String? email,
+    String? firstName,
+    String? lastName,
+    String? fullName,
+    String? occupation,
+    String? profilePhoto,
+    UserRole? role,
+  }) {
+    return AppUser(
+      uid: uid ?? this.uid,
+      email: email ?? this.email,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      fullName: fullName ?? this.fullName,
+      occupation: occupation ?? this.occupation,
+      profilePhoto: profilePhoto ?? this.profilePhoto,
+      role: role ?? this.role,
+    );
+  }
 }
