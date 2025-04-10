@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -18,6 +19,11 @@ abstract class CoreUtils {
     SchedulerBinding.instance.addPostFrameCallback((_) {
       callback();
     });
+  }
+
+  static String formatDateTime(Timestamp timestamp) {
+    final dateTime = timestamp.toDate();
+    return '${dateTime.day}/${dateTime.month}/${dateTime.year} ${dateTime.hour}:${dateTime.minute}';
   }
 
   static void heroDialog(Widget child) {

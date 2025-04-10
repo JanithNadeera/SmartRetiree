@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:smart_retiree/shared_widgets/shader_mask_wrapper.dart';
 import 'package:smart_retiree/utils/theme_extension.dart';
 
-class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const ChatAppBar({super.key});
+class EventAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final VoidCallback? onPressed;
+  const EventAppBar({super.key, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +16,7 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
         alignment: Alignment.centerLeft,
         child: ShaderMaskWrapper(
           child: Text(
-            "Support Chat",
+            "Upcoming Events",
             style: GoogleFonts.poppins(
               fontWeight: FontWeight.bold,
               fontSize: 24,
@@ -24,6 +26,22 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
       ),
+      actions: [
+        IconButton(
+          onPressed: () {
+            onPressed?.call();
+
+            print("UPLOAD EVENT");
+          },
+          icon: const ShaderMaskWrapper(
+            child: Icon(
+              MingCute.add_circle_line,
+              size: 25,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ],
     );
   }
 

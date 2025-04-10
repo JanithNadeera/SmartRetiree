@@ -1,0 +1,325 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+import 'package:smart_retiree/utils/core_utils.dart';
+import 'package:smart_retiree/utils/loader.dart';
+
+class CreateEventScreen extends StatefulWidget {
+  const CreateEventScreen({super.key});
+
+  @override
+  _CreateEventScreenState createState() => _CreateEventScreenState();
+}
+
+class _CreateEventScreenState extends State<CreateEventScreen> {
+  final _formKey = GlobalKey<FormState>();
+
+  File? _selectedImage;
+  final picker = ImagePicker();
+
+  String? _name;
+  String? _location;
+  String? _type;
+  String? _description;
+  DateTime? _selectedDate;
+  TimeOfDay? _selectedTime;
+
+  final List<String> _eventTypes = ['Education', 'Environment', 'Health'];
+
+  Future<void> _pickImage() async {
+    final pickedFile =
+        await picker.pickImage(source: ImageSource.gallery, imageQuality: 80);
+    if (pickedFile != null) {
+      setState(() => _selectedImage = File(pickedFile.path));
+    }
+  }
+
+  Future<void> _pickDate() async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2100),
+    );
+    if (picked != null) setState(() => _selectedDate = picked);
+  }
+
+  Future<void> _pickTime() async {
+    final picked =
+        await showTimePicker(context: context, initialTime: TimeOfDay.now());
+    if (picked != null) setState(() => _selectedTime = picked);
+  }
+
+  Future<String> uploadImageToCloudinary(File imageFile) async {
+    const String cloudName = 'dqaeqrs2n';
+    const String uploadPreset = 'asela123456';
+    const String apiKey = '724941716134316';
+
+    final uri =
+        Uri.parse('https://api.cloudinary.com/v1_1/$cloudName/image/upload');
+
+    final request = http.MultipartRequest('POST', uri)
+      ..fields['upload_preset'] = uploadPreset
+      ..files.add(await http.MultipartFile.fromPath('file', imageFile.path));
+
+    final response = await request.send();
+
+    // Read the response stream once and store it in a variable
+    final responseBody = await response.stream.bytesToString();
+    print("Cloudinary response: $responseBody");
+
+    if (response.statusCode == 200) {
+      print("SUCCESSFULLY UPLOADED IMAGE");
+
+      // Parse the response body
+      final jsonResponse = jsonDecode(responseBody);
+      final imageUrl =
+          jsonResponse['secure_url']; // Get the URL of the uploaded image
+
+      return imageUrl;
+    } else {
+      throw Exception('Failed to upload image');
+    }
+  }
+
+  void _submitForm() async {
+    if (!_formKey.currentState!.validate() ||
+        _selectedImage == null ||
+        _selectedDate == null ||
+        _selectedTime == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please complete all fields!')),
+      );
+      return;
+    }
+
+    _formKey.currentState!.save();
+
+    // Combine date and time
+    final fullDateTime = DateTime(
+      _selectedDate!.year,
+      _selectedDate!.month,
+      _selectedDate!.day,
+      _selectedTime!.hour,
+      _selectedTime!.minute,
+    );
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => const Center(),
+    );
+
+    try {
+      Loader.show(true);
+
+      // Upload image to Cloudinary
+      final imageUrl = await uploadImageToCloudinary(_selectedImage!);
+
+      // Upload data to Firestore (replace this with your own Firestore logic)
+      // Example:
+      await FirebaseFirestore.instance.collection('events').add({
+        'name': _name,
+        'location': _location,
+        'type': _type,
+        'description': _description,
+        'imageUrl': imageUrl,
+        'datetime': fullDateTime.toIso8601String(),
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+
+      Navigator.of(context).pop(); // Close progress dialog
+
+      CoreUtils.showToast(
+          type: ToastType.success, message: "🎉 Event created successfully!");
+
+      Navigator.of(context).pop(context); // Optionally go back
+    } catch (e) {
+      Navigator.of(context).pop(); // Close progress dialog
+
+      CoreUtils.showToast(
+          type: ToastType.error, message: "Error: ${e.toString()}");
+    } finally {
+      Loader.show(false);
+    }
+  }
+
+  Widget _buildSectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 16, bottom: 6),
+      child: Text(
+        title,
+        style: const TextStyle(
+            fontWeight: FontWeight.w600, fontSize: 16, color: Colors.black87),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xfff6f7fb),
+      appBar: AppBar(
+        title: const Text('Create Event'),
+        backgroundColor: Colors.red.shade400,
+        elevation: 0,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Card(
+          elevation: 4,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Form(
+              key: _formKey,
+              child: Column(children: [
+                // Image Picker
+                GestureDetector(
+                  onTap: _pickImage,
+                  child: Container(
+                    height: 160,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.grey[100],
+                      border: Border.all(color: Colors.grey.shade300),
+                      image: _selectedImage != null
+                          ? DecorationImage(
+                              image: FileImage(_selectedImage!),
+                              fit: BoxFit.cover,
+                            )
+                          : null,
+                    ),
+                    child: _selectedImage == null
+                        ? const Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(Icons.add_a_photo_outlined, size: 36),
+                                SizedBox(height: 6),
+                                Text("Tap to upload event image"),
+                              ],
+                            ),
+                          )
+                        : null,
+                  ),
+                ),
+
+                _buildSectionTitle("Event Name"),
+                TextFormField(
+                  decoration: _inputDecoration("Enter event name"),
+                  validator: (val) =>
+                      val == null || val.isEmpty ? "Required" : null,
+                  onSaved: (val) => _name = val,
+                ),
+
+                _buildSectionTitle("Location"),
+                TextFormField(
+                  decoration: _inputDecoration("Enter location"),
+                  validator: (val) =>
+                      val == null || val.isEmpty ? "Required" : null,
+                  onSaved: (val) => _location = val,
+                ),
+
+                _buildSectionTitle("Event Type"),
+                DropdownButtonFormField<String>(
+                  value: _type,
+                  decoration: _inputDecoration("Select type"),
+                  items: _eventTypes
+                      .map((e) => DropdownMenuItem(
+                          value: e,
+                          child: Text(
+                            e,
+                            style: const TextStyle(fontWeight: FontWeight.w500),
+                          )))
+                      .toList(),
+                  validator: (val) => val == null ? "Required" : null,
+                  onChanged: (val) => _type = val,
+                ),
+
+                _buildSectionTitle("Description"),
+                TextFormField(
+                  decoration: _inputDecoration("Write description"),
+                  maxLines: 3,
+                  onSaved: (val) => _description = val,
+                ),
+
+                _buildSectionTitle("Date & Time"),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        icon: const Icon(Icons.calendar_today),
+                        style: _pickerButtonStyle(),
+                        label: Text(_selectedDate == null
+                            ? "Pick date"
+                            : DateFormat('yyyy-MM-dd').format(_selectedDate!)),
+                        onPressed: _pickDate,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        icon: const Icon(Icons.access_time),
+                        style: _pickerButtonStyle(),
+                        label: Text(_selectedTime == null
+                            ? "Pick time"
+                            : _selectedTime!.format(context)),
+                        onPressed: _pickTime,
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 24),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red.shade400,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30)),
+                    textStyle: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  onPressed: _submitForm,
+                  child: const Text("Create Event"),
+                ),
+              ]),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  InputDecoration _inputDecoration(String hint) {
+    return InputDecoration(
+      hintText: hint,
+      filled: true,
+      fillColor: Colors.grey[100],
+      contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide.none,
+      ),
+    );
+  }
+
+  ButtonStyle _pickerButtonStyle() {
+    return ElevatedButton.styleFrom(
+      padding: const EdgeInsets.symmetric(vertical: 14),
+      backgroundColor: Colors.grey[200],
+      foregroundColor: Colors.black87,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(14),
+      ),
+    );
+  }
+}
