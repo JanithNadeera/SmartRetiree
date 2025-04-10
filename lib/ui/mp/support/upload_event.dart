@@ -2,20 +2,24 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:smart_retiree/models/app_event.dart';
+import 'package:smart_retiree/models/app_user.dart';
+import 'package:smart_retiree/providers/user_provider.dart';
 import 'package:smart_retiree/utils/core_utils.dart';
 import 'package:smart_retiree/utils/loader.dart';
 
-class CreateEventScreen extends StatefulWidget {
+class CreateEventScreen extends ConsumerStatefulWidget {
   const CreateEventScreen({super.key});
 
   @override
   _CreateEventScreenState createState() => _CreateEventScreenState();
 }
 
-class _CreateEventScreenState extends State<CreateEventScreen> {
+class _CreateEventScreenState extends ConsumerState<CreateEventScreen> {
   final _formKey = GlobalKey<FormState>();
 
   File? _selectedImage;
@@ -27,8 +31,15 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   String? _description;
   DateTime? _selectedDate;
   TimeOfDay? _selectedTime;
+  late AppUser _currentUser;
 
   final List<String> _eventTypes = ['Education', 'Environment', 'Health'];
+
+  @override
+  void initState() {
+    super.initState();
+    _currentUser = ref.read(userProvider)!;
+  }
 
   Future<void> _pickImage() async {
     final pickedFile =
@@ -57,7 +68,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   Future<String> uploadImageToCloudinary(File imageFile) async {
     const String cloudName = 'dqaeqrs2n';
     const String uploadPreset = 'asela123456';
-    const String apiKey = '724941716134316';
+    // const String apiKey = '724941716134316';
 
     final uri =
         Uri.parse('https://api.cloudinary.com/v1_1/$cloudName/image/upload');
@@ -108,39 +119,30 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
       _selectedTime!.minute,
     );
 
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (_) => const Center(),
-    );
-
     try {
       Loader.show(true);
 
-      // Upload image to Cloudinary
       final imageUrl = await uploadImageToCloudinary(_selectedImage!);
 
-      // Upload data to Firestore (replace this with your own Firestore logic)
-      // Example:
-      await FirebaseFirestore.instance.collection('events').add({
-        'name': _name,
-        'location': _location,
-        'type': _type,
-        'description': _description,
-        'imageUrl': imageUrl,
-        'datetime': fullDateTime.toIso8601String(),
-        'createdAt': FieldValue.serverTimestamp(),
-      });
-
-      Navigator.of(context).pop(); // Close progress dialog
+      final event = AppEvent(
+        id: '',
+        name: _name!,
+        time: fullDateTime.toIso8601String(),
+        location: _location!,
+        type: _type!,
+        imageUrl: imageUrl,
+        description: _description!,
+        createdAt: DateTime.now(),
+        createdBy: _currentUser.uid,
+        members: [_currentUser.uid],
+      );
+      await FirebaseFirestore.instance.collection('events').add(event.toMap());
 
       CoreUtils.showToast(
           type: ToastType.success, message: "🎉 Event created successfully!");
-
-      Navigator.of(context).pop(context); // Optionally go back
+      Navigator.of(context).pop();
+      // Optionally go back
     } catch (e) {
-      Navigator.of(context).pop(); // Close progress dialog
-
       CoreUtils.showToast(
           type: ToastType.error, message: "Error: ${e.toString()}");
     } finally {

@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:smart_retiree/utils/user_role_selector.dart';
 
 extension StringExt on String {
@@ -7,5 +9,34 @@ extension StringExt on String {
       'seeker' => UserRole.seeker,
       _ => UserRole.retiree,
     };
+  }
+}
+
+extension EventTypeColor on String {
+  Color get eventColor {
+    switch (this) {
+      case 'Education':
+        return Colors.deepOrange.shade200;
+      case 'Environment':
+        return Colors.deepPurple.shade200;
+      case 'Health':
+        return Colors.pink.shade200;
+      default:
+        return Colors.grey.shade200;
+    }
+  }
+}
+
+extension EventDateTimeFormat on String {
+  String get formattedEventDateTime {
+    try {
+      final dateTime = DateTime.parse(this); // Parse the string into DateTime
+      final date = DateFormat('yyyy/MM/dd').format(dateTime); // Format date
+      final time =
+          DateFormat('hh:mma').format(dateTime); // Format time (12-hour AM/PM)
+      return 'Date: $date Time: $time';
+    } catch (e) {
+      return 'Invalid Date'; // In case of parsing error
+    }
   }
 }

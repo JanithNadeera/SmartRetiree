@@ -135,4 +135,19 @@ class FirebaseUtils {
       log('Error clearing chat rooms: $e');
     }
   }
+
+  static void clearAllEvents() async {
+    try {
+      final firestore = FirebaseFirestore.instance;
+      final eventSnapshot = await firestore.collection('events').get();
+
+      for (final eventDoc in eventSnapshot.docs) {
+        await eventDoc.reference.delete();
+      }
+
+      log('All events have been cleared.');
+    } catch (e) {
+      log('Error clearing events: $e');
+    }
+  }
 }
