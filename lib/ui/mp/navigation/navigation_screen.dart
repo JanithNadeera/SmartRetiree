@@ -7,6 +7,7 @@ import 'package:smart_retiree/ui/mp/feed/feed_screen.dart';
 import 'package:smart_retiree/ui/mp/profile/profile_screen.dart';
 import 'package:smart_retiree/ui/mp/events/event_screen.dart';
 import 'package:smart_retiree/utils/theme_extension.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 class NavigationScreen extends StatefulWidget {
   const NavigationScreen({super.key});
@@ -34,10 +35,63 @@ class _NavigationScreenState extends State<NavigationScreen> {
     const EventScreen(),
     const ProfileScreen()
   ];
+
+  late stt.SpeechToText _speech;
+  bool _isListening = false;
+  String _command = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _speech = stt.SpeechToText();
+  }
+
+  void _startListening() async {
+    bool available = await _speech.initialize(
+      onStatus: (status) => debugPrint('Speech status: $status'),
+      onError: (error) => debugPrint('Speech error: $error'),
+    );
+    if (available) {
+      setState(() => _isListening = true);
+      _speech.listen(
+        onResult: (result) {
+          setState(() {
+            _command = result.recognizedWords;
+            debugPrint("Heard: $_command");
+          });
+          _handleCommand(_command);
+        },
+      );
+    } else {
+      debugPrint("The user has denied the use of speech recognition.");
+      _speech.stop();
+      setState(() => _isListening = false);
+    }
+  }
+
+  void _handleCommand(String command) {
+    command = command.toLowerCase();
+    if (command.contains("feed")) {
+      setState(() => activeIndex = 0);
+    } else if (command.contains("chat") || command.contains("connect")) {
+      setState(() => activeIndex = 1);
+    } else if (command.contains("event")) {
+      setState(() => activeIndex = 2);
+    } else if (command.contains("profile")) {
+      setState(() => activeIndex = 3);
+    }
+    _speech.stop();
+    setState(() => _isListening = false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: screens[activeIndex],
+      floatingActionButton: FloatingActionButton(
+        onPressed: _isListening ? _speech.stop : _startListening,
+        child: Icon(_isListening ? Icons.mic_off : Icons.mic),
+      ),
       bottomNavigationBar: SafeArea(
         child: GNav(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),

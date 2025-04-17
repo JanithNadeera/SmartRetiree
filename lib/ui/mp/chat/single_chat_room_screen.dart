@@ -133,7 +133,8 @@ class _SingleChatRoomScreenState extends ConsumerState<SingleChatRoomScreen> {
               }
 
               final userMap = userSnapshot.data!;
-              final currentUser = userMap[_currentUser.uid]!;
+              final currentUser =
+                  userMap[_currentUser.uid] ?? ref.watch(userProvider);
 
               return Scaffold(
                 appBar: CustomAppBar(
@@ -223,7 +224,7 @@ class _SingleChatRoomScreenState extends ConsumerState<SingleChatRoomScreen> {
                     MessageInput(
                       controller: _messageController,
                       focusNode: _focusNode,
-                      sendMessage: () => _sendMessage(currentUser, memberIds),
+                      sendMessage: () => _sendMessage(currentUser!, memberIds),
                     ),
                   ],
                 ),

@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
+import 'package:smart_retiree/ui/mp/events/upload_event.dart';
 import 'package:smart_retiree/widgets/submit_button.dart';
 
 class NoEvents extends StatelessWidget {
-  const NoEvents({
-    super.key,
-    required this.onTap,
-  });
-
-  final VoidCallback onTap;
+  const NoEvents({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +32,12 @@ class NoEvents extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           SubmitButton(
-            onPressed: onTap,
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const CreateEventScreen(),
+              ),
+            ),
             label: 'Create new event',
           )
         ],

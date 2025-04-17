@@ -27,15 +27,24 @@ extension EventTypeColor on String {
   }
 }
 
-extension EventDateTimeFormat on DateTime {
-  String get formattedEventDateTime {
+extension EventDateFormat on DateTime {
+  String get formattedEventDate {
     try {
-      final date = DateFormat('yyyy/MM/dd').format(this); // Format date
-      final time =
-          DateFormat('hh:mma').format(this); // Format time (12-hour AM/PM)
-      return 'Date: $date Time: $time';
+      final date = DateFormat('yyyy/MM/dd').format(this);
+      return 'Date: $date';
     } catch (e) {
-      return 'Invalid Date'; // In case of parsing error
+      return 'Invalid Date';
+    }
+  }
+}
+
+extension EventTimeFormat on DateTime {
+  String get formattedEventTime {
+    try {
+      final time = DateFormat('hh:mma').format(this);
+      return 'Time: $time';
+    } catch (e) {
+      return 'Invalid Time';
     }
   }
 }

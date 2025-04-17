@@ -25,10 +25,12 @@ class EventDetailsScreen extends ConsumerStatefulWidget {
 
 class _EventDetailsScreenState extends ConsumerState<EventDetailsScreen> {
   late AppUser _currentUser;
+  late AppEvent event;
 
   @override
   void initState() {
     super.initState();
+    event = widget.event;
     _currentUser = ref.read(userProvider)!;
   }
 
@@ -36,15 +38,17 @@ class _EventDetailsScreenState extends ConsumerState<EventDetailsScreen> {
     try {
       Loader.show(true);
       final docRef =
-          FirebaseFirestore.instance.collection('events').doc(widget.event.id);
+          FirebaseFirestore.instance.collection('events').doc(event.id);
 
-      if (!(widget.event.members.contains(_currentUser.uid))) {
-        await docRef.update({
-          'members': [...widget.event.members, _currentUser.uid]
+      if (!(event.members.contains(_currentUser.uid))) {
+        final updated = [...event.members, _currentUser.uid];
+        await docRef.update({'members': updated});
+        setState(() {
+          event = event.copyWith(members: updated);
         });
+        CoreUtils.showToast(
+            type: ToastType.success, message: 'Successfully joined');
       }
-      CoreUtils.showToast(
-          type: ToastType.success, message: 'Successfully joined');
     } catch (e) {
       CoreUtils.showToast(
           type: ToastType.error, message: 'Failed to join this event: $e');
@@ -57,16 +61,17 @@ class _EventDetailsScreenState extends ConsumerState<EventDetailsScreen> {
     try {
       Loader.show(true);
       final docRef =
-          FirebaseFirestore.instance.collection('events').doc(widget.event.id);
+          FirebaseFirestore.instance.collection('events').doc(event.id);
 
-      if ((widget.event.members.contains(_currentUser.uid))) {
-        await docRef.update({
-          'members': [widget.event.members.remove(_currentUser.uid)]
-        });
+      if ((event.members.contains(_currentUser.uid))) {
+        final updatedMembers =
+            event.members.where((id) => id != _currentUser.uid).toList();
+        await docRef.update({'members': updatedMembers});
+        setState(() => event = event.copyWith(members: updatedMembers));
+        CoreUtils.showToast(
+            type: ToastType.success,
+            message: 'Successfully revoke from this event');
       }
-      CoreUtils.showToast(
-          type: ToastType.success,
-          message: 'Successfully revoke from this event');
     } catch (e) {
       CoreUtils.showToast(
           type: ToastType.error,
@@ -80,7 +85,7 @@ class _EventDetailsScreenState extends ConsumerState<EventDetailsScreen> {
     try {
       Loader.show(true);
       final docRef =
-          FirebaseFirestore.instance.collection('events').doc(widget.event.id);
+          FirebaseFirestore.instance.collection('events').doc(event.id);
 
       await docRef.delete();
       CoreUtils.showToast(
@@ -112,7 +117,7 @@ class _EventDetailsScreenState extends ConsumerState<EventDetailsScreen> {
               CoreUtils.heroDialog(
                 MembersPopup(
                   title: 'Event Joiners',
-                  userIds: widget.event.members,
+                  userIds: event.members,
                 ),
               );
             },
@@ -124,11 +129,10 @@ class _EventDetailsScreenState extends ConsumerState<EventDetailsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (widget.event.imageUrl.isNotEmpty)
-              ImageFromUrl.show(widget.event.imageUrl),
-            const SizedBox(height: 16),
+            ImageFromUrl.show(event.imageUrl, radius: 8),
+            const SizedBox(height: 30),
             Text(
-              widget.event.name,
+              event.name,
               style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -137,10 +141,21 @@ class _EventDetailsScreenState extends ConsumerState<EventDetailsScreen> {
             const SizedBox(height: 10),
             Row(
               children: [
-                const Icon(Icons.calendar_today, size: 18),
+                const Icon(MingCuteIcons.mgc_calendar_add_line, size: 18),
                 const SizedBox(width: 8),
                 Text(
-                  widget.event.time.formattedEventDateTime,
+                  event.time.formattedEventDate,
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                const Icon(MingCuteIcons.mgc_time_line, size: 18),
+                const SizedBox(width: 8),
+                Text(
+                  event.time.formattedEventTime,
                   style: const TextStyle(fontSize: 16),
                 ),
               ],
@@ -151,7 +166,7 @@ class _EventDetailsScreenState extends ConsumerState<EventDetailsScreen> {
                 const Icon(Icons.location_on, size: 18),
                 const SizedBox(width: 8),
                 Text(
-                  widget.event.location,
+                  event.location,
                   style: const TextStyle(fontSize: 16),
                 ),
               ],
@@ -162,7 +177,7 @@ class _EventDetailsScreenState extends ConsumerState<EventDetailsScreen> {
                 const Icon(Icons.category, size: 18),
                 const SizedBox(width: 8),
                 Text(
-                  widget.event.type,
+                  event.type,
                   style: const TextStyle(fontSize: 16),
                 ),
               ],
@@ -173,30 +188,33 @@ class _EventDetailsScreenState extends ConsumerState<EventDetailsScreen> {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 8),
-            Text(
-              widget.event.description,
-              style: const TextStyle(fontSize: 15),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4.0),
+              child: Text(
+                event.description,
+                style: const TextStyle(fontSize: 15),
+              ),
             ),
             const SizedBox(
               height: 40,
               width: double.infinity,
             ),
-            if (widget.event.createdBy != _currentUser.uid)
+            if (event.createdBy != _currentUser.uid)
               Align(
                 alignment: Alignment.center,
                 child: SubmitButton(
                     onPressed: () {
-                      if (widget.event.members.contains(_currentUser.uid)) {
+                      if (event.members.contains(_currentUser.uid)) {
                         _joinRevoke();
                       } else {
                         _joinEvent();
                       }
                     },
-                    label: widget.event.members.contains(_currentUser.uid)
+                    label: event.members.contains(_currentUser.uid)
                         ? 'Revoke'
                         : 'Join Event'),
               ),
-            if (widget.event.createdBy == _currentUser.uid)
+            if (event.createdBy == _currentUser.uid)
               Align(
                 alignment: Alignment.center,
                 child: SubmitButton(

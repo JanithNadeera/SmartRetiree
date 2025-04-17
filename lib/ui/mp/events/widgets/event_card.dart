@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:smart_retiree/models/app_event.dart';
 import 'package:smart_retiree/ui/mp/events/event_details.dart';
 import 'package:smart_retiree/utils/image_from_url.dart';
@@ -27,7 +28,7 @@ class EventCard extends StatelessWidget {
       },
       child: Card(
         color: event.type.eventColor,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         elevation: .5,
         margin: const EdgeInsets.symmetric(vertical: 10),
         child: Padding(
@@ -47,15 +48,27 @@ class EventCard extends StatelessWidget {
                     const SizedBox(height: 8),
                     Row(
                       children: [
-                        const Icon(Icons.access_time, size: 16),
-                        const SizedBox(width: 6),
+                        const Icon(MingCuteIcons.mgc_calendar_add_line,
+                            size: 16),
+                        const SizedBox(width: 8),
                         Text(
-                          event.time.formattedEventDateTime,
+                          event.time.formattedEventDate,
                           style: const TextStyle(fontSize: 14),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        const Icon(MingCuteIcons.mgc_time_line, size: 16),
+                        const SizedBox(width: 6),
+                        Text(
+                          event.time.formattedEventTime,
+                          style: const TextStyle(fontSize: 14),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
                     Row(
                       children: [
                         const Icon(Icons.location_on, size: 16),
@@ -63,7 +76,7 @@ class EventCard extends StatelessWidget {
                         Text(event.location),
                       ],
                     ),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 8),
                     Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 10,
@@ -71,7 +84,7 @@ class EventCard extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         color: Colors.black.withAlpha(30),
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(4),
                       ),
                       child: Text(
                         event.type,

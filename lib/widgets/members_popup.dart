@@ -78,7 +78,10 @@ class MembersPopup extends ConsumerWidget {
                           return ListTile(
                             contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 0),
-                            leading: UserAvatar(imageUrl: user.profilePhoto),
+                            leading: UserAvatar(
+                              imageUrl: user.profilePhoto,
+                              radius: 40,
+                            ),
                             title: Text(
                               "${user.fullName} ${isCurrentUser ? "(You)" : ""}",
                               style: context.headlineSmall,

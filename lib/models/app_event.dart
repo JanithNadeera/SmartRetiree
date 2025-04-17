@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AppEvent {
@@ -52,5 +53,31 @@ class AppEvent {
       'createdBy': createdBy,
       'members': members,
     };
+  }
+
+  AppEvent copyWith({
+    String? id,
+    String? name,
+    DateTime? time,
+    String? location,
+    String? type,
+    String? imageUrl,
+    String? description,
+    DateTime? createdAt,
+    String? createdBy,
+    List<String>? members,
+  }) {
+    return AppEvent(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      time: time ?? this.time,
+      location: location ?? this.location,
+      type: type ?? this.type,
+      imageUrl: imageUrl ?? this.imageUrl,
+      description: description ?? this.description,
+      createdAt: createdAt ?? this.createdAt,
+      createdBy: createdBy ?? this.createdBy,
+      members: members ?? this.members,
+    );
   }
 }
