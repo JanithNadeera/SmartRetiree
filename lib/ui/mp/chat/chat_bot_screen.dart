@@ -186,7 +186,7 @@
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:smart_retiree/providers/chat-provider.dart';
+import 'package:smart_retiree/providers/chat_provider.dart';
 import 'package:smart_retiree/widgets/custom_appbar.dart';
 
 class ChatBotScreen extends StatefulWidget {
@@ -207,7 +207,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
         body: DashChat(
           currentUser: ChatUser(id: "user"),
           onSend: (ChatMessage messages) {
-            provider.sendMessages(userMessage: messages.text ?? "");
+            provider.sendMessages(userMessage: messages.text);
           },
           messages: provider.messages.reversed.map((chat) {
             return ChatMessage(

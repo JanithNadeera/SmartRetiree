@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -67,7 +68,7 @@ class ChatProvider extends ChangeNotifier {
           "isImage": false,
         });
       } else {
-        print('Error: ${response.body}');
+        log('Error: ${response.body}');
         _messages.add({
           "role": "bot",
           "message": "Oops! I couldn’t get a response. Please try again later.",
@@ -75,7 +76,7 @@ class ChatProvider extends ChangeNotifier {
         });
       }
     } catch (e) {
-      print('Exception: $e');
+      log('Exception: $e');
       _messages.add({
         "role": "bot",
         "message": "Something went wrong. Please try again, dear friend.",
@@ -125,7 +126,7 @@ class ChatProvider extends ChangeNotifier {
   //         botReply = "No response from the model.";
   //       }
 
-  //       print("Bot Reply: $botReply");
+  //       log("Bot Reply: $botReply");
   //       // Add the bot's reply to the messages list
   //       _messages.add({
   //         "role": "bot",
@@ -133,7 +134,7 @@ class ChatProvider extends ChangeNotifier {
   //         "isImage": false,
   //       });
   //     } else {
-  //       print('Error: ${response.body}');
+  //       log('Error: ${response.body}');
   //       _messages.add({
   //         "role": "bot",
   //         "message": "Failed to reply: ${response.statusCode}",
@@ -141,7 +142,7 @@ class ChatProvider extends ChangeNotifier {
   //       });
   //     }
   //   } catch (e) {
-  //     print('Exception: $e');
+  //     log('Exception: $e');
   //     _messages.add({
   //       "role": "bot",
   //       "message": "An error occurred. Please try again.",
@@ -197,7 +198,7 @@ class ChatProvider extends ChangeNotifier {
           "isImage": false,
         });
       } else {
-        print('Error: ${response.body}');
+        log('Error: ${response.body}');
         _messages.add({
           "role": "bot",
           "message": "Failed to reply to image: ${response.statusCode}",
@@ -205,7 +206,7 @@ class ChatProvider extends ChangeNotifier {
         });
       }
     } catch (e) {
-      print('Exception: $e');
+      log('Exception: $e');
       _messages.add({
         "role": "bot",
         "message": "An error occurred while sending the image.",

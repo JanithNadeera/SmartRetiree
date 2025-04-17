@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:provider/provider.dart' as legacy_provider;
 import 'package:provider/provider.dart';
-import 'package:smart_retiree/providers/chat-provider.dart';
+import 'package:smart_retiree/providers/chat_provider.dart';
 import 'package:smart_retiree/ui/initial/splash_screen.dart';
 import 'package:smart_retiree/utils/core_utils.dart';
 import 'package:smart_retiree/utils/firebase_options.dart';
