@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:smart_retiree/models/app_user.dart';
 import 'package:smart_retiree/models/chat_message.dart';
 import 'package:smart_retiree/providers/user_provider.dart';
-import 'package:smart_retiree/ui/mp/chat_room/widgets/user_avatar.dart';
+import 'package:smart_retiree/ui/mp/chat/widgets/user_avatar.dart';
 import 'package:smart_retiree/utils/theme_extension.dart';
 
 class ChatBubble extends ConsumerWidget {

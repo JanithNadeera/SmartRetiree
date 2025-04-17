@@ -2,10 +2,10 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
-import 'package:smart_retiree/ui/mp/chat_room/chat_rooms_screen.dart';
-import 'package:smart_retiree/ui/mp/home/home_screen.dart';
+import 'package:smart_retiree/ui/mp/chat/chat_screen.dart';
+import 'package:smart_retiree/ui/mp/feed/feed_screen.dart';
 import 'package:smart_retiree/ui/mp/profile/profile_screen.dart';
-import 'package:smart_retiree/ui/mp/support/event_list_screen.dart';
+import 'package:smart_retiree/ui/mp/events/event_screen.dart';
 import 'package:smart_retiree/utils/theme_extension.dart';
 
 class NavigationScreen extends StatefulWidget {
@@ -29,9 +29,9 @@ class _NavigationScreenState extends State<NavigationScreen> {
   ];
 
   final screens = [
-    const HomeScreen(),
-    const ChatRoomsScreen(),
-    const EventListScreen(),
+    const FeedScreen(),
+    const ChatScreen(),
+    const EventScreen(),
     const ProfileScreen()
   ];
   @override

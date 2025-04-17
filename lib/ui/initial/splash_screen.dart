@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:smart_retiree/providers/app_start_provider.dart';
 import 'package:smart_retiree/providers/user_provider.dart';
-import 'package:smart_retiree/shared_widgets/linear_indicator.dart';
+import 'package:smart_retiree/widgets/linear_indicator.dart';
 import 'package:smart_retiree/ui/landing/sign_in_page/sign_in_page.dart';
 import 'package:smart_retiree/ui/mp/navigation/navigation_screen.dart';
 import 'package:smart_retiree/utils/core_utils.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_retiree/shared_widgets/submit_button.dart';
+import 'package:smart_retiree/widgets/submit_button.dart';
 
 class NoChatRoom extends StatelessWidget {
   const NoChatRoom({

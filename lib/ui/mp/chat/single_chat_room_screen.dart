@@ -8,12 +8,12 @@ import 'package:smart_retiree/models/app_user.dart';
 import 'package:smart_retiree/models/chat_message.dart';
 import 'package:smart_retiree/models/chat_room.dart';
 import 'package:smart_retiree/providers/user_provider.dart';
-import 'package:smart_retiree/shared_widgets/custom_appbar.dart';
-import 'package:smart_retiree/shared_widgets/members_popup.dart';
-import 'package:smart_retiree/shared_widgets/shader_mask_wrapper.dart';
-import 'package:smart_retiree/ui/mp/chat_room/widgets/chat_bubble.dart';
-import 'package:smart_retiree/ui/mp/chat_room/widgets/date_separator.dart';
-import 'package:smart_retiree/ui/mp/chat_room/widgets/message_input.dart';
+import 'package:smart_retiree/widgets/custom_appbar.dart';
+import 'package:smart_retiree/widgets/members_popup.dart';
+import 'package:smart_retiree/widgets/shader_mask_wrapper.dart';
+import 'package:smart_retiree/ui/mp/chat/widgets/chat_bubble.dart';
+import 'package:smart_retiree/ui/mp/chat/widgets/date_separator.dart';
+import 'package:smart_retiree/ui/mp/chat/widgets/message_input.dart';
 import 'package:smart_retiree/utils/core_utils.dart';
 import 'package:smart_retiree/utils/loader.dart';
 

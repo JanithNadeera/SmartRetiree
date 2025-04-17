@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_retiree/models/app_user.dart';
 import 'package:smart_retiree/providers/user_provider.dart';
-import 'package:smart_retiree/shared_widgets/submit_button.dart';
-import 'package:smart_retiree/ui/mp/chat_room/widgets/user_avatar.dart';
+import 'package:smart_retiree/widgets/submit_button.dart';
+import 'package:smart_retiree/ui/mp/chat/widgets/user_avatar.dart';
 import 'package:smart_retiree/utils/loader.dart';
 import 'package:smart_retiree/utils/theme_extension.dart';
 

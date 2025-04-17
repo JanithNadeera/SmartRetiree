@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:smart_retiree/shared_widgets/shader_mask_wrapper.dart';
+import 'package:smart_retiree/widgets/shader_mask_wrapper.dart';
 import 'package:smart_retiree/utils/theme_extension.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {

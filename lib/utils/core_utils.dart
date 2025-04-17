@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:smart_retiree/shared_widgets/hero_dialog_route.dart';
+import 'package:smart_retiree/widgets/hero_dialog_route.dart';
 import 'package:smart_retiree/utils/toast_extension.dart';
 
 final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =

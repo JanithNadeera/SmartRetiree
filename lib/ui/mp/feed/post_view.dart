@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:smart_retiree/models/app_post.dart';
-import 'package:smart_retiree/ui/mp/home/widgets/post_action.dart';
-import 'package:smart_retiree/ui/mp/home/widgets/post_hash_tags.dart';
-import 'package:smart_retiree/ui/mp/home/widgets/post_header.dart';
-import 'package:smart_retiree/ui/mp/home/widgets/post_image.dart';
-import 'package:smart_retiree/ui/mp/home/widgets/post_stats.dart';
-import 'package:smart_retiree/ui/mp/home/widgets/post_text_body.dart';
+import 'package:smart_retiree/ui/mp/feed/widgets/post_action.dart';
+import 'package:smart_retiree/ui/mp/feed/widgets/post_hash_tags.dart';
+import 'package:smart_retiree/ui/mp/feed/widgets/post_header.dart';
+import 'package:smart_retiree/ui/mp/feed/widgets/post_image.dart';
+import 'package:smart_retiree/ui/mp/feed/widgets/post_stats.dart';
+import 'package:smart_retiree/ui/mp/feed/widgets/post_text_body.dart';
 import 'package:smart_retiree/utils/theme_extension.dart';
 
 class PostView extends StatelessWidget {

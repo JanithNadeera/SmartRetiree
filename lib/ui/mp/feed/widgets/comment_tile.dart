@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_retiree/models/post_comment.dart';
-import 'package:smart_retiree/ui/mp/chat_room/widgets/user_avatar.dart';
+import 'package:smart_retiree/ui/mp/chat/widgets/user_avatar.dart';
 
 class CommentTile extends StatelessWidget {
   final PostComment comment;

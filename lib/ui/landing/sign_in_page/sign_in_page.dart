@@ -6,8 +6,8 @@ import 'package:gap/gap.dart';
 import 'package:smart_retiree/models/app_user.dart';
 import 'package:smart_retiree/providers/user_provider.dart';
 
-import 'package:smart_retiree/shared_widgets/input_form_field.dart';
-import 'package:smart_retiree/shared_widgets/submit_button.dart';
+import 'package:smart_retiree/widgets/input_form_field.dart';
+import 'package:smart_retiree/widgets/submit_button.dart';
 import 'package:smart_retiree/ui/landing/sign_in_page/widgets/auth_footer.dart';
 import 'package:smart_retiree/ui/mp/navigation/navigation_screen.dart';
 import 'package:smart_retiree/utils/core_utils.dart';

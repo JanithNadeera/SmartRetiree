@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_retiree/ui/mp/chat_room/widgets/user_avatar.dart';
+import 'package:smart_retiree/ui/mp/chat/widgets/user_avatar.dart';
 import 'package:smart_retiree/utils/theme_extension.dart';
 
 class ProfileImage extends StatelessWidget {

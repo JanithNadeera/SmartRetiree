@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
-import 'package:smart_retiree/shared_widgets/input_form_field.dart';
+import 'package:smart_retiree/widgets/input_form_field.dart';
 import 'package:smart_retiree/utils/theme_extension.dart';
 import 'package:smart_retiree/utils/validators.dart';
 

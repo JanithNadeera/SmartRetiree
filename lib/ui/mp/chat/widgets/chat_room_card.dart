@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_retiree/models/chat_room.dart';
-import 'package:smart_retiree/ui/mp/chat_room/single_chat_room_screen.dart';
+import 'package:smart_retiree/ui/mp/chat/single_chat_room_screen.dart';
 import 'package:smart_retiree/utils/string_extension.dart';
 import 'package:smart_retiree/utils/theme_extension.dart';
 

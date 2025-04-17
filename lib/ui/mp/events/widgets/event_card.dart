@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_retiree/models/app_event.dart';
-import 'package:smart_retiree/ui/mp/support/event_details.dart';
+import 'package:smart_retiree/ui/mp/events/event_details.dart';
 import 'package:smart_retiree/utils/image_from_url.dart';
 import 'package:smart_retiree/utils/string_extension.dart';
 

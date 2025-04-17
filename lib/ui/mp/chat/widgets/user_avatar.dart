@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:smart_retiree/shared_widgets/shader_mask_wrapper.dart';
+import 'package:smart_retiree/widgets/shader_mask_wrapper.dart';
 import 'package:smart_retiree/utils/loader.dart';
 
 class UserAvatar extends StatelessWidget {

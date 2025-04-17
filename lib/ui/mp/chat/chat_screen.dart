@@ -4,23 +4,23 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:smart_retiree/models/chat_room.dart';
 import 'package:smart_retiree/providers/user_provider.dart';
-import 'package:smart_retiree/shared_widgets/create_new_chat_popup.dart';
-import 'package:smart_retiree/shared_widgets/custom_appbar.dart';
-import 'package:smart_retiree/shared_widgets/shader_mask_wrapper.dart';
-import 'package:smart_retiree/ui/mp/chat_room/single_chat_room_screen.dart';
-import 'package:smart_retiree/ui/mp/chat_room/widgets/chat_room_card.dart';
-import 'package:smart_retiree/ui/mp/chat_room/widgets/no_chat_room.dart';
+import 'package:smart_retiree/widgets/create_new_chat_popup.dart';
+import 'package:smart_retiree/widgets/custom_appbar.dart';
+import 'package:smart_retiree/widgets/shader_mask_wrapper.dart';
+import 'package:smart_retiree/ui/mp/chat/single_chat_room_screen.dart';
+import 'package:smart_retiree/ui/mp/chat/widgets/chat_room_card.dart';
+import 'package:smart_retiree/ui/mp/chat/widgets/no_chat_room.dart';
 import 'package:smart_retiree/utils/core_utils.dart';
 import 'package:smart_retiree/utils/loader.dart';
 
-class ChatRoomsScreen extends ConsumerStatefulWidget {
-  const ChatRoomsScreen({super.key});
+class ChatScreen extends ConsumerStatefulWidget {
+  const ChatScreen({super.key});
 
   @override
-  ConsumerState<ChatRoomsScreen> createState() => _ChatRoomsScreenState();
+  ConsumerState<ChatScreen> createState() => _ChatScreenState();
 }
 
-class _ChatRoomsScreenState extends ConsumerState<ChatRoomsScreen> {
+class _ChatScreenState extends ConsumerState<ChatScreen> {
   final _newRoomController = TextEditingController();
 
   @override

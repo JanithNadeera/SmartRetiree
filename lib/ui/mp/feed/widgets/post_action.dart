@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:smart_retiree/providers/user_provider.dart';
-import 'package:smart_retiree/ui/mp/home/widgets/action_button.dart';
-import 'package:smart_retiree/ui/mp/home/widgets/comment_bottom_sheet.dart';
+import 'package:smart_retiree/ui/mp/feed/widgets/action_button.dart';
+import 'package:smart_retiree/ui/mp/feed/widgets/comment_bottom_sheet.dart';
 import 'package:smart_retiree/utils/core_utils.dart';
 import 'package:smart_retiree/utils/theme_extension.dart';
 

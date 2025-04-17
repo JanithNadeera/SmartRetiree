@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
-import 'package:smart_retiree/shared_widgets/submit_button.dart';
+import 'package:smart_retiree/widgets/submit_button.dart';
 
 class NoEvents extends StatelessWidget {
   const NoEvents({

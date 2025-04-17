@@ -2,21 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:smart_retiree/models/app_event.dart';
-import 'package:smart_retiree/shared_widgets/custom_appbar.dart';
-import 'package:smart_retiree/shared_widgets/shader_mask_wrapper.dart';
-import 'package:smart_retiree/ui/mp/support/upload_event.dart';
-import 'package:smart_retiree/ui/mp/support/widgets/event_card.dart';
-import 'package:smart_retiree/ui/mp/support/widgets/no_events.dart';
+import 'package:smart_retiree/widgets/custom_appbar.dart';
+import 'package:smart_retiree/widgets/shader_mask_wrapper.dart';
+import 'package:smart_retiree/ui/mp/events/upload_event.dart';
+import 'package:smart_retiree/ui/mp/events/widgets/event_card.dart';
+import 'package:smart_retiree/ui/mp/events/widgets/no_events.dart';
 import 'package:smart_retiree/utils/loader.dart';
 
-class EventListScreen extends StatefulWidget {
-  const EventListScreen({super.key});
+class EventScreen extends StatefulWidget {
+  const EventScreen({super.key});
 
   @override
-  State<EventListScreen> createState() => _EventListScreenState();
+  State<EventScreen> createState() => _EventScreenState();
 }
 
-class _EventListScreenState extends State<EventListScreen> {
+class _EventScreenState extends State<EventScreen> {
   Stream<List<AppEvent>> _eventsStream() {
     return FirebaseFirestore.instance
         .collection('events')
