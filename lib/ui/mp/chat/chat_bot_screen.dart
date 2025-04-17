@@ -185,21 +185,25 @@
 
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:provider/provider.dart' as provider;
 import 'package:smart_retiree/providers/chat-provider.dart';
+import 'package:smart_retiree/providers/user_provider.dart';
 import 'package:smart_retiree/widgets/custom_appbar.dart';
 
-class ChatBotScreen extends StatefulWidget {
+class ChatBotScreen extends ConsumerStatefulWidget {
   const ChatBotScreen({super.key});
 
   @override
-  State<ChatBotScreen> createState() => _ChatBotScreenState();
+  ConsumerState<ChatBotScreen> createState() => _ChatBotScreenState();
 }
 
-class _ChatBotScreenState extends State<ChatBotScreen> {
+class _ChatBotScreenState extends ConsumerState<ChatBotScreen> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<ChatProvider>(builder: (context, provider, _) {
+    final user = ref.watch(userProvider)!;
+
+    return provider.Consumer<ChatProvider>(builder: (context, provider, _) {
       return Scaffold(
         appBar: const CustomAppBar(
           title: "Smart Retiree Assistant",
@@ -213,10 +217,13 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
             return ChatMessage(
               text: chat['message'],
               user: ChatUser(
-                  id: chat['role'] == 'user' ? "user" : "bot",
-                  firstName: chat['role'] == "bot"
-                      ? "Smart Retiree Assistant"
-                      : "You"),
+                id: chat['role'] == 'user' ? "user" : "bot",
+                firstName:
+                    chat['role'] == "bot" ? "Smart Retiree Assistant" : "You",
+                profileImage: chat['role'] == "bot"
+                    ? "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG.png"
+                    : "https://i.imgur.com/QCNbOAo.png",
+              ),
               customProperties: {
                 'isImage': chat['isImage'] ?? false,
                 "image": chat['image']
@@ -224,6 +231,11 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
               createdAt: DateTime.now(),
             );
           }).toList(),
+          messageOptions: const MessageOptions(
+            showOtherUsersName: true,
+            showOtherUsersAvatar: true,
+            showTime: true,
+          ),
           // messageOptions: MessageOptions(
           //   messageMediaBuilder: (ChatMessage message, _, __) {
           //     // Custom rendering for media (e.g., images)
