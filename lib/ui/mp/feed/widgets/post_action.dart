@@ -36,16 +36,15 @@ class _PostActionsState extends ConsumerState<PostActions> {
     try {
       final userId = ref.read(userProvider)!.uid;
       final updatedLikes = [...widget.likes, userId];
-
+      isLike.value = true;
       await FirebaseFirestore.instance
           .collection('posts')
           .doc(widget.postId)
           .update({
         'likes': updatedLikes,
       });
-
-      isLike.value = true;
     } catch (e) {
+      isLike.value = false;
       log('Error liking post: $e');
     }
   }
@@ -54,16 +53,15 @@ class _PostActionsState extends ConsumerState<PostActions> {
     try {
       final userId = ref.read(userProvider)!.uid;
       final updatedLikes = widget.likes.where((id) => id != userId).toList();
-
+      isLike.value = false;
       await FirebaseFirestore.instance
           .collection('posts')
           .doc(widget.postId)
           .update({
         'likes': updatedLikes,
       });
-
-      isLike.value = false;
     } catch (e) {
+      isLike.value = true;
       log('Error unliking post: $e');
     }
   }
