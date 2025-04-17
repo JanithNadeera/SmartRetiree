@@ -129,8 +129,8 @@ class _EventDetailsScreenState extends ConsumerState<EventDetailsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ImageFromUrl.show(event.imageUrl),
-            const SizedBox(height: 16),
+            ImageFromUrl.show(event.imageUrl, radius: 8),
+            const SizedBox(height: 30),
             Text(
               event.name,
               style: const TextStyle(
@@ -141,10 +141,21 @@ class _EventDetailsScreenState extends ConsumerState<EventDetailsScreen> {
             const SizedBox(height: 10),
             Row(
               children: [
-                const Icon(Icons.calendar_today, size: 18),
+                const Icon(MingCuteIcons.mgc_calendar_add_line, size: 18),
                 const SizedBox(width: 8),
                 Text(
-                  event.time.formattedEventDateTime,
+                  event.time.formattedEventDate,
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                const Icon(MingCuteIcons.mgc_time_line, size: 18),
+                const SizedBox(width: 8),
+                Text(
+                  event.time.formattedEventTime,
                   style: const TextStyle(fontSize: 16),
                 ),
               ],
@@ -177,9 +188,12 @@ class _EventDetailsScreenState extends ConsumerState<EventDetailsScreen> {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 8),
-            Text(
-              event.description,
-              style: const TextStyle(fontSize: 15),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4.0),
+              child: Text(
+                event.description,
+                style: const TextStyle(fontSize: 15),
+              ),
             ),
             const SizedBox(
               height: 40,

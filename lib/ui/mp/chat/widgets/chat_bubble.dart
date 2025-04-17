@@ -30,7 +30,10 @@ class ChatBubble extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (!isCurrentUser) ...[
-            UserAvatar(imageUrl: user.profilePhoto),
+            UserAvatar(
+              imageUrl: user.profilePhoto,
+              radius: 24,
+            ),
             const SizedBox(width: 8),
           ],
           Flexible(
