@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:smart_retiree/shared_widgets/shader_mask_wrapper.dart';
 import 'package:smart_retiree/utils/loader.dart';
 
@@ -26,7 +25,7 @@ class UserAvatar extends StatelessWidget {
         placeholder: (context, url) => Loader.indicator(size: 10),
         errorWidget: (context, url, error) => const ShaderMaskWrapper(
           child: Icon(
-            MingCuteIcons.mgc_file_forbid_line,
+            Icons.broken_image_outlined,
             color: Colors.white,
           ),
         ),
