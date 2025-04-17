@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:smart_retiree/utils/string_extension.dart';
 import 'package:smart_retiree/utils/user_role_selector.dart';
 

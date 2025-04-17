@@ -10,6 +10,7 @@ import 'package:smart_retiree/shared_widgets/members_popup.dart';
 import 'package:smart_retiree/shared_widgets/shader_mask_wrapper.dart';
 import 'package:smart_retiree/shared_widgets/submit_button.dart';
 import 'package:smart_retiree/utils/core_utils.dart';
+import 'package:smart_retiree/utils/image_from_url.dart';
 import 'package:smart_retiree/utils/loader.dart';
 import 'package:smart_retiree/utils/string_extension.dart';
 
@@ -124,17 +125,7 @@ class _EventDetailsScreenState extends ConsumerState<EventDetailsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (widget.event.imageUrl.isNotEmpty)
-              ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: Image.network(
-                  widget.event.imageUrl,
-                  width: double.infinity,
-                  height: 200,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) =>
-                      const Icon(Icons.image_not_supported, size: 100),
-                ),
-              ),
+              ImageFromUrl.show(widget.event.imageUrl),
             const SizedBox(height: 16),
             Text(
               widget.event.name,

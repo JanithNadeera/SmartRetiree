@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:smart_retiree/utils/theme_extension.dart';
 
 class PostStats extends StatelessWidget {
-  const PostStats({super.key});
+  final List<String> likes;
+  final int commentsCount;
+  const PostStats(
+      {super.key, required this.likes, required this.commentsCount});
 
   @override
   Widget build(BuildContext context) {
@@ -10,9 +13,9 @@ class PostStats extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
       child: Row(
         children: [
-          Text("4 Likes", style: context.labelMedium),
+          Text("${likes.length} Likes", style: context.labelMedium),
           const SizedBox(width: 24),
-          Text("10 Comments", style: context.labelMedium),
+          Text("$commentsCount Comments", style: context.labelMedium),
         ],
       ),
     );

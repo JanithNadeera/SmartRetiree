@@ -2,19 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:smart_retiree/utils/theme_extension.dart';
 
 class PostHashtags extends StatelessWidget {
-  const PostHashtags({super.key});
+  final List<String> tags;
+  const PostHashtags({super.key, required this.tags});
 
   @override
   Widget build(BuildContext context) {
-    const tags = [
-      "reliable",
-      "resourceful",
-      "workAnniversary",
-      "teamWork",
-      "workPlace",
-      "thankYou"
-    ];
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: SizedBox(

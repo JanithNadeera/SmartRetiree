@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:smart_retiree/ui/mp/home/widgets/comment_bottom_sheet.dart';
+import 'package:smart_retiree/models/post_comment.dart';
+import 'package:smart_retiree/ui/mp/chat_room/widgets/user_avatar.dart';
 
 class CommentTile extends StatelessWidget {
-  final CommentModel comment;
+  final PostComment comment;
 
   const CommentTile({super.key, required this.comment});
 
@@ -13,13 +14,9 @@ class CommentTile extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.only(top: 2.0, right: 8),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(15),
-            child: Image.asset(
-              "assets/images/${comment.pic}",
-              width: 30,
-              height: 30,
-            ),
+          child: UserAvatar(
+            imageUrl: comment.createdBy.profilePhoto,
+            radius: 30,
           ),
         ),
         Flexible(
@@ -33,7 +30,7 @@ class CommentTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  comment.name,
+                  comment.createdBy.fullName,
                   style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
@@ -42,7 +39,7 @@ class CommentTile extends StatelessWidget {
                 ),
                 const SizedBox(height: 5),
                 Text(
-                  comment.message,
+                  comment.comment,
                   style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w400,

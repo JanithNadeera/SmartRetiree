@@ -34,7 +34,10 @@ class PostTextBody extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      child: SelectableText.rich(TextSpan(children: spans)),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: SelectableText.rich(TextSpan(children: spans)),
+      ),
     );
   }
 }

@@ -150,4 +150,19 @@ class FirebaseUtils {
       log('Error clearing events: $e');
     }
   }
+
+  static void clearAllposts() async {
+    try {
+      final firestore = FirebaseFirestore.instance;
+      final postsSnapshot = await firestore.collection('posts').get();
+
+      for (final postDoc in postsSnapshot.docs) {
+        await postDoc.reference.delete();
+      }
+
+      log('All posts have been cleared.');
+    } catch (e) {
+      log('Error clearing posts: $e');
+    }
+  }
 }

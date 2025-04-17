@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:smart_retiree/utils/image_from_url.dart';
 
 class PostImage extends StatelessWidget {
-  const PostImage({super.key});
+  final String url;
+  const PostImage({super.key, required this.url});
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1.4,
-      child: Image.asset(
-        "assets/images/profile.jpg",
-        fit: BoxFit.cover,
-      ),
-    );
+    return ImageFromUrl.show(url, radius: 0, ratio: 1.4);
   }
 }

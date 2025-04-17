@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:smart_retiree/shared_widgets/shader_mask_wrapper.dart';
+import 'package:smart_retiree/ui/mp/home/create_post_screen.dart';
 import 'package:smart_retiree/utils/theme_extension.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -27,7 +28,10 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       actions: [
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (_) => const CreatePostScreen()));
+          },
           icon: const ShaderMaskWrapper(
             child: Icon(
               MingCuteIcons.mgc_add_circle_line,

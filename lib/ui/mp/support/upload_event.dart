@@ -1,16 +1,14 @@
-import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:smart_retiree/models/app_event.dart';
 import 'package:smart_retiree/models/app_user.dart';
 import 'package:smart_retiree/providers/user_provider.dart';
 import 'package:smart_retiree/utils/core_utils.dart';
+import 'package:smart_retiree/utils/image_upload.dart';
 import 'package:smart_retiree/utils/loader.dart';
 
 class CreateEventScreen extends ConsumerStatefulWidget {
@@ -66,47 +64,6 @@ class _CreateEventScreenState extends ConsumerState<CreateEventScreen> {
     if (picked != null) setState(() => _selectedTime = picked);
   }
 
-  Future<String> uploadImageToCloudinary(File imageFile) async {
-    try {
-      Loader.show(true);
-      const String cloudName = 'dqaeqrs2n';
-      const String uploadPreset = 'asela123456';
-      // const String apiKey = '724941716134316';
-
-      final uri =
-          Uri.parse('https://api.cloudinary.com/v1_1/$cloudName/image/upload');
-
-      final request = http.MultipartRequest('POST', uri)
-        ..fields['upload_preset'] = uploadPreset
-        ..files.add(await http.MultipartFile.fromPath('file', imageFile.path));
-
-      final response = await request.send();
-
-      // Read the response stream once and store it in a variable
-      final responseBody = await response.stream.bytesToString();
-      log("Cloudinary response: $responseBody");
-
-      if (response.statusCode == 200) {
-        log("SUCCESSFULLY UPLOADED IMAGE");
-
-        // Parse the response body
-        final jsonResponse = jsonDecode(responseBody);
-        final imageUrl =
-            jsonResponse['secure_url']; // Get the URL of the uploaded image
-
-        return imageUrl;
-      } else {
-        CoreUtils.showToast(
-            type: ToastType.error, message: 'Failed to upload image');
-        return '';
-      }
-    } catch (e) {
-      return '';
-    } finally {
-      Loader.show(false);
-    }
-  }
-
   void _submitForm() async {
     if (!_formKey.currentState!.validate() ||
         _selectedImage == null ||
@@ -132,7 +89,8 @@ class _CreateEventScreenState extends ConsumerState<CreateEventScreen> {
     try {
       Loader.show(true);
 
-      final imageUrl = await uploadImageToCloudinary(_selectedImage!);
+      final imageUrl =
+          await ImageUpload.uploadImageToCloudinary(_selectedImage!);
 
       final event = AppEvent(
         id: '',
@@ -140,7 +98,7 @@ class _CreateEventScreenState extends ConsumerState<CreateEventScreen> {
         time: fullDateTime,
         location: _location!,
         type: _type!,
-        imageUrl: imageUrl,
+        imageUrl: imageUrl!,
         description: _description!,
         createdAt: DateTime.now(),
         createdBy: _currentUser.uid,

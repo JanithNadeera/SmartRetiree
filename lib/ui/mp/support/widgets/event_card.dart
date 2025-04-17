@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_retiree/models/app_event.dart';
 import 'package:smart_retiree/ui/mp/support/event_details.dart';
+import 'package:smart_retiree/utils/image_from_url.dart';
 import 'package:smart_retiree/utils/string_extension.dart';
 
 class EventCard extends StatelessWidget {
@@ -27,14 +28,13 @@ class EventCard extends StatelessWidget {
       child: Card(
         color: event.type.eventColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        elevation: 4,
+        elevation: .5,
         margin: const EdgeInsets.symmetric(vertical: 10),
         child: Padding(
           padding: const EdgeInsets.all(12),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Event Info
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,36 +70,31 @@ class EventCard extends StatelessWidget {
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.black.withAlpha(15),
+                        color: Colors.black.withAlpha(30),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
                         event.type,
                         style: const TextStyle(
                           fontSize: 12,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-
               const SizedBox(width: 12),
-
-              // Event Image
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Image.network(
+              SizedBox(
+                height: 90,
+                width: 90,
+                child: ImageFromUrl.show(
                   event.imageUrl,
-                  height: 90,
-                  width: 90,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) => const Icon(
-                    Icons.image_not_supported,
-                  ),
+                  iconSize: 30,
+                  radius: 8,
+                  ratio: 1,
                 ),
-              ),
+              )
             ],
           ),
         ),
