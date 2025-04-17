@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_retiree/models/app_post.dart';
+import 'package:smart_retiree/ui/mp/chatbot/chat_bot_screen.dart'
+    show ChatBotScreen;
 import 'package:smart_retiree/ui/mp/feed/post_view.dart';
 import 'package:smart_retiree/ui/mp/feed/widgets/home_app_bar.dart';
 // import 'package:smart_retiree/utils/firebase_utils.dart';
@@ -58,6 +60,18 @@ class _FeedScreenState extends State<FeedScreen> {
             );
           },
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Navigate to the post creation screen
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ChatBotScreen(),
+              ));
+        },
+        backgroundColor: context.primary,
+        child: const Icon(Icons.chat_bubble_outline),
       ),
     );
   }
