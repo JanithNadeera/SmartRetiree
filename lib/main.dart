@@ -2,6 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:provider/provider.dart' as legacy_provider;
+import 'package:provider/provider.dart';
+import 'package:smart_retiree/providers/chat-provider.dart';
 import 'package:smart_retiree/ui/initial/splash_screen.dart';
 import 'package:smart_retiree/utils/core_utils.dart';
 import 'package:smart_retiree/utils/firebase_options.dart';
@@ -21,20 +24,41 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GlobalLoaderOverlay(
-      overlayWidgetBuilder: (_) {
-        return Loader.indicator();
-      },
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Smart Retiree',
-        scaffoldMessengerKey: rootScaffoldMessengerKey,
-        navigatorKey: rootNavigatorKey,
-        theme: lightTheme,
-        darkTheme: darkTheme,
-        themeMode: ThemeMode.light,
-        home: const SplashScreen(),
+    return MultiProvider(
+      providers: [
+        legacy_provider.ChangeNotifierProvider(
+            create: (context) => ChatProvider()),
+      ],
+      child: GlobalLoaderOverlay(
+        overlayWidgetBuilder: (_) {
+          return Loader.indicator();
+        },
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Smart Retiree',
+          scaffoldMessengerKey: rootScaffoldMessengerKey,
+          navigatorKey: rootNavigatorKey,
+          theme: lightTheme,
+          darkTheme: darkTheme,
+          themeMode: ThemeMode.light,
+          home: const SplashScreen(),
+        ),
       ),
     );
+    // GlobalLoaderOverlay(
+    //   overlayWidgetBuilder: (_) {
+    //     return Loader.indicator();
+    //   },
+    //   child: MaterialApp(
+    //     debugShowCheckedModeBanner: false,
+    //     title: 'Smart Retiree',
+    //     scaffoldMessengerKey: rootScaffoldMessengerKey,
+    //     navigatorKey: rootNavigatorKey,
+    //     theme: lightTheme,
+    //     darkTheme: darkTheme,
+    //     themeMode: ThemeMode.light,
+    //     home: const SplashScreen(),
+    //   ),
+    // );
   }
 }
