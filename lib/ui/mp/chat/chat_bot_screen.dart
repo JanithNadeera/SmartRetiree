@@ -50,7 +50,8 @@ class ChatBotScreenState extends State<ChatBotScreen> {
 
   Future<void> _sendToChatGPT(String prompt) async {
     const apiKey =
-        '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';
+        // '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';
+        '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';
 
     final response = await http.post(
       Uri.parse("https://openrouter.ai/api/v1/chat/completions"),
@@ -58,7 +59,7 @@ class ChatBotScreenState extends State<ChatBotScreen> {
         "Authorization": "Bearer $apiKey",
         "Content-Type": "application/json",
         "HTTP-Referer": "http://localhost:3000",
-        "X-Title": "Smart Retiree Assistant"
+        "X-Title": "Smart Retiree"
       },
       body: jsonEncode({
         "model": "mistralai/mistral-7b-instruct",
@@ -178,3 +179,113 @@ class ChatBotScreenState extends State<ChatBotScreen> {
     );
   }
 }
+// import 'dart:convert';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+// import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+// import 'package:http/http.dart' as http;
+// import 'package:uuid/uuid.dart';
+
+// class ChatBotScreen extends StatefulWidget {
+//   const ChatBotScreen({super.key});
+
+//   @override
+//   _ChatBotScreenState createState() => _ChatBotScreenState();
+// }
+
+// class _ChatBotScreenState extends State<ChatBotScreen> {
+//   final List<types.Message> _messages = [];
+//   final _user = const types.User(id: 'user');
+//   final _bot = const types.User(id: 'bot');
+
+//   Future<void> _handleSendPressed(types.PartialText message) async {
+//     final userMessage = types.TextMessage(
+//       author: _user,
+//       createdAt: DateTime.now().millisecondsSinceEpoch,
+//       id: const Uuid().v4(),
+//       text: message.text,
+//     );
+
+//     setState(() {
+//       _messages.insert(0, userMessage);
+//     });
+
+//     await _sendToChatGPT(message.text);
+//   }
+
+  // Future<void> _sendToChatGPT(String prompt) async {
+  //   const apiKey =
+  //       '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'; // 🔐 Paste your OpenRouter key here
+
+  //   final response = await http.post(
+  //     Uri.parse("https://openrouter.ai/api/v1/chat/completions"),
+  //     headers: {
+  //       "Authorization": "Bearer $apiKey",
+  //       "Content-Type": "application/json",
+  //       "HTTP-Referer":
+  //           "https://yourapp.com", // Use your own app domain or localhost
+  //       "X-Title": "Smart Retiree Assistant"
+  //     },
+  //     body: jsonEncode({
+  //       "model": "mistralai/mistral-7b-instruct", // Fast and free model
+  //       "messages": [
+  //         {
+  //           "role": "system",
+  //           "content":
+  //               "You are a kind, caring, and helpful personal assistant for retired people. Speak in warm, friendly, and easy-to-understand language. Help with simple tasks, reminders, jokes, or health tips."
+  //         },
+  //         {"role": "user", "content": prompt}
+  //       ]
+  //     }),
+  //   );
+
+  //   final data = jsonDecode(response.body);
+
+  //   if (response.statusCode == 200 && data['choices'] != null) {
+  //     final botText = data['choices'][0]['message']['content'];
+
+  //     final botMessage = types.TextMessage(
+  //       author: _bot,
+  //       createdAt: DateTime.now().millisecondsSinceEpoch,
+  //       id: const Uuid().v4(),
+  //       text: botText.trim(),
+  //     );
+
+  //     setState(() {
+  //       _messages.insert(0, botMessage);
+  //     });
+  //   } else {
+  //     print('OpenRouter Error: ${response.body}');
+  //     final errorMessage = data['error']?['message'] ?? 'Something went wrong.';
+  //     final botMessage = types.TextMessage(
+  //       author: _bot,
+  //       createdAt: DateTime.now().millisecondsSinceEpoch,
+  //       id: const Uuid().v4(),
+  //       text: '⚠️ Error: $errorMessage',
+  //     );
+
+  //     setState(() {
+  //       _messages.insert(0, botMessage);
+  //     });
+  //   }
+  // }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('Smart Retiree Assistant'),
+//         backgroundColor: Colors.teal,
+//       ),
+//       body: Stack(
+//         children: [
+//           Chat(
+//             messages: _messages,
+//             onSendPressed: _handleSendPressed,
+//             user: _user,
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
