@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:smart_retiree/models/app_post.dart';
 import 'package:smart_retiree/ui/mp/feed/post_view.dart';
 import 'package:smart_retiree/ui/mp/feed/widgets/home_app_bar.dart';
-// import 'package:smart_retiree/utils/firebase_utils.dart';
+import 'package:smart_retiree/utils/firebase_utils.dart';
 import 'package:smart_retiree/utils/loader.dart';
 import 'package:smart_retiree/utils/theme_extension.dart';
 
@@ -18,7 +18,7 @@ class _FeedScreenState extends State<FeedScreen> {
   @override
   void initState() {
     super.initState();
-    // FirebaseUtils.clearAllposts();
+    // FirebaseUtils.clearAllEvents();
   }
 
   Stream<List<AppPost>> _postsStream() {

@@ -62,16 +62,7 @@ class _EventScreenState extends State<EventScreen> {
             } else if (snapshot.hasError) {
               return const Center(child: Text('Error loading events'));
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return NoEvents(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const CreateEventScreen(),
-                    ),
-                  );
-                },
-              );
+              return const NoEvents();
             }
 
             final events = snapshot.data!;

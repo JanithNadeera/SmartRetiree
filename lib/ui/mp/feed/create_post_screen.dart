@@ -135,6 +135,7 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
+        surfaceTintColor: Colors.transparent,
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: Icon(
@@ -144,13 +145,9 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen> {
           ),
         ),
         centerTitle: true,
-        title: const Text(
+        title: Text(
           "Create Post",
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w700,
-            color: Color(0xFF15294B),
-          ),
+          style: context.headlineMedium,
         ),
         actions: [
           Padding(
