@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:smart_retiree/models/chat_room.dart';
 import 'package:smart_retiree/providers/user_provider.dart';
+import 'package:smart_retiree/ui/mp/chat/chat_bot_screen.dart';
 import 'package:smart_retiree/widgets/create_new_chat_popup.dart';
 import 'package:smart_retiree/widgets/custom_appbar.dart';
 import 'package:smart_retiree/widgets/shader_mask_wrapper.dart';
@@ -93,6 +94,22 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             icon: const ShaderMaskWrapper(
               child: Icon(
                 MingCuteIcons.mgc_add_circle_line,
+                size: 25,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ChatBotScreen(),
+                  ));
+            },
+            icon: const ShaderMaskWrapper(
+              child: Icon(
+                MingCuteIcons.mgc_ai_line,
                 size: 25,
                 color: Colors.white,
               ),

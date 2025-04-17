@@ -106,15 +106,17 @@ class ChatBotScreenState extends State<ChatBotScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const CustomAppBar(
-          title: "Smart Retiree Assistant",
-        ),
-        body: Chat(
+      appBar: const CustomAppBar(
+        title: "Smart Retiree Assistant",
+      ),
+      body: SafeArea(
+        child: Chat(
           messages: _messages,
           onSendPressed: _handleSendPressed,
           user: _user,
           theme: DefaultChatTheme(
-            inputBackgroundColor: Colors.white,
+            backgroundColor: context.surface,
+            inputBackgroundColor: context.surface,
             inputTextColor: Colors.black,
             primaryColor: context.primary,
             secondaryColor: const Color(0xFFE5E5EA),
@@ -124,9 +126,10 @@ class ChatBotScreenState extends State<ChatBotScreen> {
             inputBorderRadius: const BorderRadius.all(Radius.circular(5)),
             inputPadding: const EdgeInsets.all(16),
             inputTextDecoration: const InputDecoration(
-              hintText: 'Type a message...',
-              border: InputBorder.none,
-            ),
+                hintText: 'Type a message...',
+                border: InputBorder.none,
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 16, vertical: 4)),
             inputTextStyle: const TextStyle(color: Colors.black, fontSize: 20),
             sendButtonIcon: Icon(Icons.send, color: context.primary),
           ),
@@ -170,6 +173,8 @@ class ChatBotScreenState extends State<ChatBotScreen> {
               ),
             );
           },
-        ));
+        ),
+      ),
+    );
   }
 }
