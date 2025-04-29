@@ -47,25 +47,29 @@ class _NavigationScreenState extends State<NavigationScreen> {
   }
 
   void _startListening() async {
-    bool available = await _speech.initialize(
-      onStatus: (status) => debugPrint('Speech status: $status'),
-      onError: (error) => debugPrint('Speech error: $error'),
-    );
-    if (available) {
-      setState(() => _isListening = true);
-      _speech.listen(
-        onResult: (result) {
-          setState(() {
-            _command = result.recognizedWords;
-            debugPrint("Heard: $_command");
-          });
-          _handleCommand(_command);
-        },
+    try {
+      bool available = await _speech.initialize(
+        onStatus: (status) => debugPrint('Speech status: $status'),
+        onError: (error) => debugPrint('Speech error: $error'),
       );
-    } else {
-      debugPrint("The user has denied the use of speech recognition.");
-      _speech.stop();
-      setState(() => _isListening = false);
+      if (available) {
+        setState(() => _isListening = true);
+        _speech.listen(
+          onResult: (result) {
+            setState(() {
+              _command = result.recognizedWords;
+              debugPrint("Heard: $_command");
+            });
+            _handleCommand(_command);
+          },
+        );
+      } else {
+        debugPrint("The user has denied the use of speech recognition.");
+        _speech.stop();
+        setState(() => _isListening = false);
+      }
+    } catch (e) {
+      debugPrint("Error initializing speech recognition: $e");
     }
   }
 
@@ -94,6 +98,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
       ),
       bottomNavigationBar: SafeArea(
         child: GNav(
+          selectedIndex: activeIndex,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
           gap: 8,
           activeColor: context.primary,
